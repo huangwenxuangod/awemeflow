@@ -1,52 +1,135 @@
-# MkSaaS
+# AwemeFlow
 
-Make AI SaaS in a weekend.
+AwemeFlow is a Cloudflare-ready Douyin video parsing site.
 
-The complete Next.js boilerplate for building profitable SaaS, with auth, payments, i18n, newsletter, dashboard, blog, docs, blocks, themes, SEO and more.
+It is focused on one clear job:
 
-## Branches
+- accept Douyin share text, short links, or `aweme_id`
+- return usable video URLs
+- expose cover, author, and basic metadata
+- keep the product surface narrow enough to ship fast
 
-- [main](https://github.com/MkSaaSHQ/mksaas-template): The `main` branch can be deployed on Vercel or with Docker, and uses Postgres as database by default, you can check out this [deployment guide](https://mksaas.com/zh/docs/deployment/vercel) for more details.
-- [cloudflare](https://github.com/MkSaaSHQ/mksaas-template/tree/cloudflare): The `cloudflare` branch can be deployed on Cloudflare Worker, and uses Postgres as database by default, you can check out this [deployment guide](https://mksaas.com/zh/docs/deployment/cloudflare) for more details.
-- [cloudflare-d1](https://github.com/MkSaaSHQ/mksaas-template/tree/cloudflare-d1): The `cloudflare-d1` branch can be deployed on Cloudflare Worker, and uses Cloudflare D1 as database by default, you can check out this [deployment guide](https://mksaas.com/zh/docs/deployment/cloudflare-d1) for more details.
+## Current status
 
-## Author
+The public site has already been converged into a single-product parser:
 
-This project is created by [Fox](https://x.com/indie_maker_fox), the founder of [MkSaaS](https://mksaas.com) and [Mkdirs](https://mkdirs.com). The official X account for [MkSaaS](https://mksaas.com) is [@mksaascom](https://x.com/mksaascom), you can follow this account for the updates about MkSaaS.
+- homepage is productized around the parser
+- public blog, docs, and test routes are hidden from users
+- Chinese and English product copy is aligned to `AwemeFlow`
+- `pnpm build` passes
+- the parser route is available at `/api/video`
 
-## Documentation
+## Stack
 
-The documentation is available on the [website](https://mksaas.com/docs). It includes guides, tutorials, and detailed explanations of the code. I designed it to be as beginner-friendly as possible, so you can start making money from day one.
+- Next.js 16 App Router
+- `next-intl`
+- OpenNext for Cloudflare
+- Cloudflare Workers
+- Cloudflare D1
+- optional Cloudflare KV cache for Douyin cookie + short parser cache
 
-If you found anything that could be improved, please let me know.
+## Local development
 
-## Links
+```powershell
+corepack pnpm install
+corepack pnpm dev
+```
 
-- 🔥 website: [mksaas.com](https://mksaas.com)
-- 🌐 demo: [demo.mksaas.com](https://demo.mksaas.com)
-- 📚 documentation: [mksaas.com/docs](https://mksaas.com/docs)
-- 🗓️ roadmap: [mksaas roadmap](https://mksaas.link/roadmap)
-- 👨‍💻 discord: [mksaas.link/discord](https://mksaas.link/discord)
-- 📹 video: [mksaas.link/youtube](https://mksaas.link/youtube)
+Default local URL:
 
-## Repositories
+```text
+http://127.0.0.1:8787
+```
 
-By default, you should have access to all 5 repositories. If you find that you’re unable to access any of them, please don’t hesitate to reach out to me, and I’ll assist you in resolving the issue.
+Useful commands:
 
-- [mksaas-template](https://github.com/MkSaaSHQ/mksaas-template): https://demo.mksaas.com
-- [mksaas-blog](https://github.com/MkSaaSHQ/mksaas-blog): https://mksaas.me
-- [mksaas-haitang](https://github.com/MkSaaSHQ/mksaas-haitang): https://haitang.app
-- [mksaas-app](https://github.com/MkSaaSHQ/mksaas-app): https://mkdollar.com
-- [mksaas-outfit](https://github.com/MkSaaSHQ/mksaas-outfit): built by [@yihui_indie](https://x.com/yihui_indie)
+```powershell
+corepack pnpm build
+corepack pnpm test:douyin
+corepack pnpm db:migrate
+corepack pnpm db:migrate:prod
+corepack pnpm preview
+corepack pnpm deploy
+```
 
-## Notice
+## Cloudflare deploy checklist
 
-> If you have any questions, please [submit an issue](https://github.com/MkSaaSHQ/mksaas-template/issues/new), or contact me at [support@mksaas.com](mailto:support@mksaas.com), or join our [discord community](https://mksaas.link/discord) and ask for help there.
+### 1. Configure Worker + D1
 
-> If you want to receive notifications whenever code changes, please click `Watch` button in the top right.
+Check [wrangler.jsonc](D:/dev/my-project/douyin/mksaas-cloudflare-d1/wrangler.jsonc):
 
-> When submitting any content to the  issues of the repository, please use **English** as the main Language, so that everyone can read it and help you, thank you for your supports.
+- Worker name
+- D1 binding `DB`
+- D1 database id
+- migration directory
 
-## License
+If you want parser cache sharing across isolates, create KV:
 
-For any details on the license, please refer to the [License](LICENSE) file.
+```powershell
+pnpm wrangler kv namespace create DOUYIN_CACHE
+```
+
+Then add the namespace to `wrangler.jsonc`.
+
+### 2. Configure environment variables / secrets
+
+At minimum, review:
+
+- `NEXT_PUBLIC_BASE_URL`
+- `BETTER_AUTH_SECRET`
+- `RESEND_API_KEY` if email is enabled
+- Stripe keys if payment stays enabled
+- OAuth keys if Google/GitHub login stays enabled
+
+Reference template:
+
+- [env.example](D:/dev/my-project/douyin/mksaas-cloudflare-d1/env.example)
+
+For production secrets on Cloudflare, use Wrangler secrets or the Cloudflare dashboard.
+
+### 3. Apply D1 migrations
+
+Before first production deploy:
+
+```powershell
+corepack pnpm db:migrate:prod
+```
+
+### 4. Deploy
+
+```powershell
+corepack pnpm deploy
+```
+
+## Important note for Windows
+
+`opennextjs-cloudflare build` is not fully reliable on native Windows and may fail with file locking errors inside `.open-next/`.
+
+This is a local environment limitation, not a confirmed app-code blocker.
+
+Recommended deployment paths:
+
+- deploy from Cloudflare via GitHub-connected Linux build
+- deploy from WSL
+- deploy from a Linux CI runner
+
+## Launch judgment
+
+This project is close enough to ship to Cloudflare as a first parser MVP if you accept the current scope:
+
+- parser-first public site
+- hidden template routes
+- existing auth / payment / dashboard code kept in repo but not yet fully productized
+
+What still needs your production decision before real launch:
+
+- whether to keep auth enabled
+- whether to keep payment enabled now or later
+- whether to add KV cache before production traffic
+- final domain and production env values
+
+## Related docs
+
+- [docs/DOUYIN_CLOUDFLARE.md](D:/dev/my-project/douyin/mksaas-cloudflare-d1/docs/DOUYIN_CLOUDFLARE.md)
+- [wrangler.jsonc](D:/dev/my-project/douyin/mksaas-cloudflare-d1/wrangler.jsonc)
+- [AGENTS.md](D:/dev/my-project/douyin/mksaas-cloudflare-d1/AGENTS.md)

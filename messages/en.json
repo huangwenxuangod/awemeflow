@@ -1,8 +1,8 @@
 {
   "Metadata": {
-    "name": "MkSaaS Demo",
-    "title": "MkSaaS - The Best AI SaaS Boilerplate",
-    "description": "MkSaaS is the best AI SaaS boilerplate. Make AI SaaS in days, simply and effortlessly"
+    "name": "AwemeFlow",
+    "title": "AwemeFlow - A Cloudflare-ready Douyin video parsing tool",
+    "description": "Paste Douyin share text, a short link, or an aweme ID to get the video URL, cover, author details, and a clean parsing result."
   },
   "Common": {
     "premium": "Premium",
@@ -45,9 +45,9 @@
     }
   },
   "PricingPage": {
-    "title": "Pricing",
-    "description": "Choose the plan that works best for you",
-    "subtitle": "Choose the plan that works best for you",
+    "title": "Plans",
+    "description": "Choose a plan based on parsing frequency and team workflow needs",
+    "subtitle": "Choose a plan based on parsing frequency and team workflow needs",
     "monthly": "Monthly",
     "yearly": "Yearly",
     "PricingCard": {
@@ -70,46 +70,46 @@
   },
   "PricePlans": {
     "free": {
-      "name": "Free",
-      "description": "Basic features for personal use",
+      "name": "Starter",
+      "description": "For low-volume manual parsing and product evaluation",
       "features": {
-        "feature-1": "Up to 3 projects",
-        "feature-2": "1 GB storage",
-        "feature-3": "Basic analytics",
-        "feature-4": "Community support"
+        "feature-1": "Basic share-link parsing",
+        "feature-2": "Manual access to video URLs",
+        "feature-3": "Cover and author metadata",
+        "feature-4": "Good for solo low-frequency usage"
       },
       "limits": {
-        "limit-1": "Custom domains",
-        "limit-2": "Custom branding",
-        "limit-3": "Lifetime updates"
+        "limit-1": "No team collaboration",
+        "limit-2": "No batch parsing",
+        "limit-3": "No advanced integration layer"
       }
     },
     "pro": {
       "name": "Pro",
-      "description": "Advanced features for professionals",
+      "description": "For content teams that need steady day-to-day usage",
       "features": {
-        "feature-1": "Unlimited projects",
-        "feature-2": "10 GB storage",
-        "feature-3": "Advanced analytics",
-        "feature-4": "Priority support",
-        "feature-5": "Custom domains"
+        "feature-1": "Higher parsing allowance",
+        "feature-2": "More stable team usage",
+        "feature-3": "Priority issue support",
+        "feature-4": "Fits content operations workflows",
+        "feature-5": "Reserved room for stronger extensions"
       },
       "limits": {
-        "limit-1": "Custom branding",
-        "limit-2": "Lifetime updates"
+        "limit-1": "No large-scale API quota",
+        "limit-2": "No deep custom solution"
       }
     },
     "lifetime": {
-      "name": "Lifetime",
-      "description": "Premium features with one-time payment",
+      "name": "Team Expansion",
+      "description": "For teams that need stronger integration and longer-term usage planning",
       "features": {
-        "feature-1": "All Pro features",
-        "feature-2": "100 GB storage",
-        "feature-3": "Dedicated support",
-        "feature-4": "Enterprise-grade security",
-        "feature-5": "Advanced integrations",
-        "feature-6": "Custom branding",
-        "feature-7": "Lifetime updates"
+        "feature-1": "Everything in Pro",
+        "feature-2": "Better fit for batch processing",
+        "feature-3": "Reserved path for team collaboration",
+        "feature-4": "More flexible usage ceilings",
+        "feature-5": "Built for long-running content systems",
+        "feature-6": "Supports deeper customization",
+        "feature-7": "Priority upgrades and roadmap feedback"
       }
     }
   },
@@ -142,57 +142,57 @@
     "backToHome": "Back to home"
   },
   "AboutPage": {
-    "title": "About",
-    "description": "This is MkSaaS, an AI SaaS template built with modern technologies, helping you build your SaaS faster and better.",
-    "authorName": "MkSaaS",
-    "authorBio": "AI SaaS Boilerplate",
-    "introduction": "👋 Hi there! This is MkSaaS, an AI SaaS template built with modern technologies, helping you build your SaaS faster and better. If you have any questions, welcome to contact me.",
-    "talkWithMe": "Talk with me",
-    "followMe": "Follow me on X"
+    "title": "About AwemeFlow",
+    "description": "AwemeFlow is a Douyin video parsing site for content teams and automation workflows, focused on turning share inputs into usable structured results fast.",
+    "authorName": "AwemeFlow",
+    "authorBio": "A Cloudflare-ready Douyin video parsing site",
+    "introduction": "AwemeFlow is built to do one job well: convert Douyin share text, short links, and aweme IDs into usable video URLs, covers, author data, and clean metadata for operators, analysts, and workflow builders.",
+    "talkWithMe": "Contact support",
+    "followMe": "Follow the project"
   },
   "ChangelogPage": {
-    "title": "Changelog",
-    "description": "Stay up to date with the latest changes in our product",
-    "subtitle": "Stay up to date with the latest changes in our product"
+    "title": "Release Notes",
+    "description": "Track the latest parser improvements and frontend product updates in AwemeFlow",
+    "subtitle": "Recent updates to parsing reliability and product experience"
   },
   "RoadmapPage": {
     "title": "Roadmap",
-    "description": "Explore our future plans and upcoming features",
-    "subtitle": "Explore our future plans and upcoming features"
+    "description": "See what AwemeFlow will add next across parsing, reliability, and monetization",
+    "subtitle": "The next steps for parser quality, workflow access, and commercial layers"
   },
   "ContactPage": {
-    "title": "Contact",
-    "description": "We'll help you find the right plan for your business",
-    "subtitle": "We'll help you find the right plan for your business",
+    "title": "Contact AwemeFlow",
+    "description": "Reach out for parser issues, API access, bulk workflows, or partnership requests",
+    "subtitle": "Share broken examples, integration needs, or commercial requests",
     "form": {
-      "title": "Contact Us",
-      "description": "If you have any questions or feedback, please reach out to our team",
+      "title": "Send a request",
+      "description": "Tell us about your use case, a failed parse sample, or the workflow you want to connect",
       "name": "Name",
       "email": "Email",
-      "message": "Message",
-      "submit": "Submit",
+      "message": "Request",
+      "submit": "Send request",
       "submitting": "Submitting...",
-      "success": "Message sent successfully",
-      "fail": "Failed to send message",
+      "success": "Request sent successfully",
+      "fail": "Failed to send request",
       "nameMinLength": "Name must be at least 3 characters",
       "nameMaxLength": "Name must not exceed 30 characters",
       "emailValidation": "Please enter a valid email address",
-      "messageMinLength": "Message must be at least 10 characters",
+      "messageMinLength": "Request must be at least 10 characters",
       "messageMaxLength": "Message must not exceed 500 characters"
     }
   },
   "WaitlistPage": {
-    "title": "Waitlist",
-    "description": "Join our waitlist for the launch of our product",
-    "subtitle": "Join our waitlist for the launch of our product",
+    "title": "Join the beta list",
+    "description": "Join the AwemeFlow beta list for API access, batch parsing, and team features",
+    "subtitle": "Best for users who need steadier calling patterns, bulk workflows, and team use",
     "form": {
-      "title": "Join Our Waitlist",
-      "description": "We will notify you when we launch our product",
+      "title": "Join the beta queue",
+      "description": "Leave your email and we will notify you when API access, bulk parsing, and commercial plans open up",
       "email": "Email",
-      "subscribe": "Subscribe",
-      "subscribing": "Subscribing...",
-      "success": "Subscribed successfully",
-      "fail": "Failed to subscribe",
+      "subscribe": "Join beta",
+      "subscribing": "Joining...",
+      "success": "Joined successfully",
+      "fail": "Failed to join",
       "emailValidation": "Please enter a valid email address"
     }
   },
@@ -296,7 +296,7 @@
     "previousPage": "Previous",
     "nextPage": "Next",
     "chooseLanguage": "Select language",
-    "title": "MkSaaS Docs",
+    "title": "AwemeFlow Docs",
     "homepage": "Homepage",
     "PageActions": {
       "copyMarkdown": "Copy Markdown",
@@ -322,39 +322,33 @@
   "Marketing": {
     "navbar": {
       "features": {
-        "title": "Features"
+        "title": "Capabilities"
       },
       "pricing": {
-        "title": "Pricing"
-      },
-      "blog": {
-        "title": "Blog"
-      },
-      "docs": {
-        "title": "Docs"
+        "title": "Plans"
       },
       "pages": {
-        "title": "Pages",
+        "title": "More",
         "items": {
           "about": {
-            "title": "About",
-            "description": "Learn more about our company, mission, and values"
+            "title": "About the product",
+            "description": "See the positioning, boundaries, and intended use cases of AwemeFlow"
           },
           "contact": {
-            "title": "Contact",
-            "description": "Get in touch with our team for support or inquiries"
+            "title": "Contact support",
+            "description": "Report parser issues, ask about API access, or discuss integrations"
           },
           "waitlist": {
-            "title": "Waitlist",
-            "description": "Join our waitlist for latest news and updates"
+            "title": "Beta list",
+            "description": "Get priority notice for API, bulk parsing, and team features"
           },
           "changelog": {
-            "title": "Changelog",
-            "description": "See the latest updates to our products"
+            "title": "Release notes",
+            "description": "Track the latest parser and frontend product updates"
           },
           "roadmap": {
             "title": "Roadmap",
-            "description": "Explore our future plans and upcoming features"
+            "description": "See what comes next in parsing, reliability, and monetization"
           },
           "cookiePolicy": {
             "title": "Cookie Policy",
@@ -372,30 +366,30 @@
       }
     },
     "footer": {
-      "tagline": "Make AI SaaS in days, simply and effortlessly",
+      "tagline": "Turn Douyin share links into usable video URLs and structured parser output",
       "product": {
         "title": "Product",
         "items": {
-          "features": "Features",
-          "pricing": "Pricing",
+          "features": "Capabilities",
+          "pricing": "Plans",
           "faq": "FAQ"
         }
       },
       "resources": {
-        "title": "Resources",
+        "title": "Progress",
         "items": {
           "blog": "Blog",
           "docs": "Documentation",
-          "changelog": "Changelog",
+          "changelog": "Release notes",
           "roadmap": "Roadmap"
         }
       },
       "company": {
-        "title": "Company",
+        "title": "Contact",
         "items": {
-          "about": "About",
-          "contact": "Contact",
-          "waitlist": "Waitlist"
+          "about": "About the product",
+          "contact": "Contact support",
+          "waitlist": "Beta list"
         }
       },
       "legal": {
@@ -741,249 +735,249 @@
     }
   },
   "HomePage": {
-    "title": "MkSaaS",
-    "description": "Make AI SaaS in days, simply and effortlessly",
+    "title": "AwemeFlow",
+    "description": "A Douyin video parsing site for content teams and automation workflows",
     "hero": {
-      "title": "Make AI SaaS in days, simply and effortlessly",
-      "description": "The is a demo website built with MkSaaS, a Next.js SaaS boilerplate to help you build your AI SaaS faster and better.",
-      "introduction": "Introducing MkSaaS Boilerplate",
-      "primary": "Get Started",
-      "secondary": "See Demo"
+      "title": "Paste a Douyin share link and get a usable video URL in seconds",
+      "description": "AwemeFlow is focused on one job: turn Douyin share text, short links, and aweme IDs into clean video URLs, covers, author data, and parser-ready output.",
+      "introduction": "Cloudflare-ready Douyin parser",
+      "primary": "Start parsing",
+      "secondary": "See capabilities"
     },
     "logocloud": {
-      "title": "Your favorite companies are our partners"
+      "title": "Built for content, research, and workflow teams"
     },
     "integration": {
-      "title": "Integrations",
-      "subtitle": "Integrate with your favorite tools",
-      "description": "Connect seamlessly with popular platforms and services to enhance your workflow.",
-      "learnMore": "Learn More",
+      "title": "Workflow paths",
+      "subtitle": "Fit the parser into real operating flows",
+      "description": "The current product surface is intentionally narrow, but the output structure is already useful for manual operations, lightweight automation, and future API calls.",
+      "learnMore": "See details",
       "items": {
         "item-1": {
-          "title": "Google Gemini",
-          "description": "Amet praesentium deserunt ex commodi tempore fuga voluptatem."
+          "title": "Content operations",
+          "description": "Pull source videos quickly for reuse, review, and publishing workflows."
         },
         "item-2": {
-          "title": "Replit",
-          "description": "Amet praesentium deserunt ex commodi tempore fuga voluptatem."
+          "title": "Competitive research",
+          "description": "Collect author, cover, and playback assets faster when tracking accounts or topics."
         },
         "item-3": {
-          "title": "MagicUI",
-          "description": "Amet praesentium deserunt ex commodi tempore fuga voluptatem."
+          "title": "Prompt pipelines",
+          "description": "Pass parsed video metadata into summarization, tagging, or archive flows."
         },
         "item-4": {
-          "title": "VSCodium",
-          "description": "Amet praesentium deserunt ex commodi tempore fuga voluptatem."
+          "title": "Team review",
+          "description": "Keep failed samples and useful links in one place for issue handling and iteration."
         },
         "item-5": {
-          "title": "MediaWiki",
-          "description": "Amet praesentium deserunt ex commodi tempore fuga voluptatem."
+          "title": "Batch-ready foundation",
+          "description": "The current site is single-input first, but the model is shaped for future bulk parsing."
         },
         "item-6": {
-          "title": "Google PaLM",
-          "description": "Amet praesentium deserunt ex commodi tempore fuga voluptatem."
+          "title": "API transition",
+          "description": "Once parser stability is good enough, the same result shape can move into API plans."
         }
       }
     },
     "integration2": {
-      "title": "Integrate with your favorite tools",
-      "description": "Connect seamlessly with popular platforms and services to enhance your workflow.",
-      "primaryButton": "Get Started",
-      "secondaryButton": "See Demo"
+      "title": "Start with the parser, expand into the system later",
+      "description": "AwemeFlow is deliberately shipping the narrowest useful product first, then layering batch parsing, API access, and team workflows on top.",
+      "primaryButton": "Open parser",
+      "secondaryButton": "View roadmap"
     },
     "features": {
-      "title": "Features",
-      "subtitle": "The features of your product",
-      "description": "Write the description of your product here",
+      "title": "Capabilities",
+      "subtitle": "What the current parser already does well",
+      "description": "The site is being tightened around parser clarity, result usefulness, and deployment readiness instead of generic SaaS breadth.",
       "items": {
         "item-1": {
-          "title": "Product Feature One",
-          "description": "Please write the detailed description of feature one here, make it as detailed as possible, make it more attractive to users"
+          "title": "Three input modes",
+          "description": "Accept Douyin share text, short links, and aweme IDs without forcing users into one strict format."
         },
         "item-2": {
-          "title": "Product Feature Two",
-          "description": "Please write the detailed description of feature two here, make it as detailed as possible, make it more attractive to users"
+          "title": "Usable output shape",
+          "description": "Return video URL, cover, author info, and base metadata in a form that operators can use immediately."
         },
         "item-3": {
-          "title": "Product Feature Three",
-          "description": "Please write the detailed description of feature three here, make it as detailed as possible, make it more attractive to users"
+          "title": "Cloudflare-first structure",
+          "description": "The app is already aligned with OpenNext and Cloudflare deployment expectations for fast rollout."
         },
         "item-4": {
-          "title": "Product Feature Four",
-          "description": "Please write the detailed description of feature four here, make it as detailed as possible, make it more attractive to users"
+          "title": "Product convergence",
+          "description": "Public pages, nav, and metadata are being narrowed into one coherent Douyin parsing product."
         }
       }
     },
     "features2": {
-      "title": "Features2",
-      "subtitle": "The features of your product",
-      "description": "Write the description of your product here",
-      "feature-1": "Product Feature One",
-      "feature-2": "Product Feature Two",
-      "feature-3": "Product Feature Three",
-      "feature-4": "Product Feature Four"
+      "title": "Operating principles",
+      "subtitle": "The product is intentionally narrow for now",
+      "description": "The current frontend is designed to make the parser legible, credible, and easy to adopt before expanding the commercial surface.",
+      "feature-1": "Parser first, platform later",
+      "feature-2": "Useful results before memberships",
+      "feature-3": "Single-product narrative across pages",
+      "feature-4": "Keep backend options without exposing template noise"
     },
     "features3": {
-      "title": "Features3",
-      "subtitle": "The features of your product",
-      "description": "Write the description of your product here",
+      "title": "Next layer",
+      "subtitle": "What this can grow into after the parser is stable",
+      "description": "The roadmap is not about adding random SaaS furniture. It is about extending the same parser product into heavier usage patterns.",
       "items": {
         "item-1": {
-          "title": "Product Feature One",
-          "description": "Please write the detailed description of feature one here"
+          "title": "Batch parsing",
+          "description": "Support multiple links and denser working sessions for content teams."
         },
         "item-2": {
-          "title": "Product Feature Two",
-          "description": "Please write the detailed description of feature two here"
+          "title": "API access",
+          "description": "Expose the parser as a structured endpoint once reliability is steady enough."
         },
         "item-3": {
-          "title": "Product Feature Three",
-          "description": "Please write the detailed description of feature three here"
+          "title": "Team usage",
+          "description": "Add collaborative flows for issue reporting, sample review, and handoff."
         },
         "item-4": {
-          "title": "Product Feature Four",
-          "description": "Please write the detailed description of feature four here"
+          "title": "Quota layers",
+          "description": "Differentiate casual usage, pro workflows, and commercial volume cleanly."
         },
         "item-5": {
-          "title": "Product Feature Five",
-          "description": "Please write the detailed description of feature five here"
+          "title": "Failure handling",
+          "description": "Capture broken samples and route them into a tighter parser quality loop."
         },
         "item-6": {
-          "title": "Product Feature Six",
-          "description": "Please write the detailed description of feature six here"
+          "title": "Workflow exports",
+          "description": "Push parsed results into downstream research, archive, or content systems."
         }
       }
     },
     "pricing": {
-      "title": "Pricing",
-      "subtitle": "Pricing",
-      "description": "Choose the plan that works best for you"
+      "title": "Plans",
+      "subtitle": "Plans",
+      "description": "Choose a plan based on parsing frequency and team workflow needs"
     },
     "faqs": {
       "title": "FAQ",
-      "subtitle": "Frequently Asked Questions",
+      "subtitle": "Questions about parser scope and next steps",
       "items": {
         "item-1": {
-          "question": "Do you offer a free trial?",
-          "answer": "Yes, we offer a 7-day free trial."
+          "question": "What does AwemeFlow do right now?",
+          "answer": "It parses Douyin share text, short links, and aweme IDs into usable video URLs and structured metadata."
         },
         "item-2": {
-          "question": "How do I cancel my subscription?",
-          "answer": "You can cancel your subscription by visiting the billing page."
+          "question": "Is this already ready for Cloudflare?",
+          "answer": "Yes. The current app structure has already been aligned with Cloudflare-friendly deployment and has been building successfully."
         },
         "item-3": {
-          "question": "Can I change my plan?",
-          "answer": "Yes, you can change your plan at any time by visiting the billing page."
+          "question": "Does it already support API access?",
+          "answer": "Not as a polished public product layer yet. The current focus is parser reliability and a strong single-input frontend."
         },
         "item-4": {
-          "question": "What is the refund policy?",
-          "answer": "We offer a 30-day money-back guarantee if you are not happy with our product."
+          "question": "Why hide blog, docs, and test pages?",
+          "answer": "Because they dilute the product story. Keeping them out of the public surface makes the site feel like one focused parser product."
         },
         "item-5": {
-          "question": "Can't find what you're looking for?",
-          "answer": "Please contact our customer support team at support@mksaas.com"
+          "question": "How do I report a broken example or ask for API access?",
+          "answer": "Use the contact page or beta list and include the failed sample, expected workflow, or volume requirement."
         }
       }
     },
     "testimonials": {
-      "title": "Testimonials",
-      "subtitle": "What our customers are saying",
+      "title": "Use cases",
+      "subtitle": "Who this parser is currently good for",
       "items": {
         "item-1": {
-          "name": "Jonathan Yombo",
-          "role": "Software Engineer",
+          "name": "Content operator",
+          "role": "Manual workflow",
           "image": "https://randomuser.me/api/portraits/men/1.jpg",
-          "quote": "MkSaaS is really extraordinary and very practical, no need to break your head. A real gold mine."
+          "quote": "Paste the share text, get the usable video URL, and move on without extra cleaning steps."
         },
         "item-2": {
-          "name": "Yves Kalume",
-          "role": "GDE - Android",
+          "name": "Research analyst",
+          "role": "Competitive tracking",
           "image": "https://randomuser.me/api/portraits/men/6.jpg",
-          "quote": "With no experience in webdesign I just redesigned my entire website in a few minutes with tailwindcss thanks to MkSaaS."
+          "quote": "The parser is most useful when you need covers, author data, and source links fast for account analysis."
         },
         "item-3": {
-          "name": "Yucel Faruksahan",
-          "role": "Tailkits Creator",
+          "name": "Workflow builder",
+          "role": "Automation prep",
           "image": "https://randomuser.me/api/portraits/men/7.jpg",
-          "quote": "Great work on MkSaaS template. This is one of the best personal website that I have seen so far :)"
+          "quote": "The current frontend is simple, but the output shape is already close to what an internal API flow would need."
         },
         "item-4": {
-          "name": "Anonymous author",
-          "role": "Product Manager",
+          "name": "PM or founder",
+          "role": "MVP validation",
           "image": "https://randomuser.me/api/portraits/men/8.jpg",
-          "quote": "I downloaded the one of MkSaaS template which is very clear to understand at the start and you could modify the codes/blocks to fit perfectly on your purpose of the page."
+          "quote": "This version is good for validating whether parser demand and repeat usage are real before adding heavier commercial layers."
         },
         "item-5": {
-          "name": "Shekinah Tshiokufila",
-          "role": "Senior Software Engineer",
+          "name": "Content team lead",
+          "role": "Team expansion",
           "image": "https://randomuser.me/api/portraits/men/4.jpg",
-          "quote": "MkSaaS is redefining the standard of web design, with these blocks it provides an easy and efficient way for those who love beauty but may lack the time to implement it."
+          "quote": "Once batch parsing and quota layers are added, the product can naturally move from solo use to team use."
         },
         "item-6": {
-          "name": "Oketa Fred",
-          "role": "Fullstack Developer",
+          "name": "Deployment owner",
+          "role": "Cloudflare rollout",
           "image": "https://randomuser.me/api/portraits/men/2.jpg",
-          "quote": "I absolutely love MkSaaS! The component blocks are beautifully designed and easy to use, which makes creating a great-looking website a breeze."
+          "quote": "The app is already in a shape where shipping a clean first version on Cloudflare is much more realistic."
         },
         "item-7": {
-          "name": "Zeki",
-          "role": "Founder of ChatExtend",
+          "name": "Operator",
+          "role": "Low-friction usage",
           "image": "https://randomuser.me/api/portraits/men/5.jpg",
-          "quote": "MkSaaS is the perfect fusion of simplicity and versatility, enabling us to create UIs that are as stunning as they are user-friendly."
+          "quote": "The big win is that the parser now sits at the center of the product instead of being buried under template furniture."
         },
         "item-8": {
-          "name": "Joseph Kitheka",
-          "role": "Fullstack Developer",
+          "name": "Commercial buyer",
+          "role": "Future API interest",
           "image": "https://randomuser.me/api/portraits/men/9.jpg",
-          "quote": "MkSaaS has transformed the way I develop web applications. Their extensive collection of UI components, blocks, and templates has significantly accelerated my workflow."
+          "quote": "The current site makes it clear what will become paid later: volume, API access, and steadier team workflows."
         },
         "item-9": {
-          "name": "Khatab Wedaa",
-          "role": "MerakiUI Creator",
+          "name": "Quality loop owner",
+          "role": "Reliability first",
           "image": "https://randomuser.me/api/portraits/men/10.jpg",
-          "quote": "MkSaaS is an elegant, clean, and responsive tailwind css components it's very helpful to start fast with your project."
+          "quote": "The real product moat here is not page count. It is parser success rate, fast issue feedback, and usable output."
         },
         "item-10": {
-          "name": "Rodrigo Aguilar",
-          "role": "TailwindAwesome Creator",
+          "name": "Growth owner",
+          "role": "Narrative clarity",
           "image": "https://randomuser.me/api/portraits/men/11.jpg",
-          "quote": "I love MkSaaS ❤️. The component blocks are well-structured, simple to use, and beautifully designed. It makes it really easy to have a good-looking website in no time."
+          "quote": "A tighter single-product story usually converts better than exposing every leftover template surface."
         },
         "item-11": {
-          "name": "Eric Ampire",
-          "role": "@GoogleDevExpert for Android",
+          "name": "Infra-minded builder",
+          "role": "Launch readiness",
           "image": "https://randomuser.me/api/portraits/men/12.jpg",
-          "quote": "MkSaaS templates are the perfect solution for anyone who wants to create a beautiful and functional website without any web design experience."
+          "quote": "This is now much closer to a launchable parser MVP than to a generic SaaS boilerplate demo."
         },
         "item-12": {
-          "name": "Roland Tubonge",
-          "role": "Software Engineer",
+          "name": "Roadmap watcher",
+          "role": "Next-stage planning",
           "image": "https://randomuser.me/api/portraits/men/13.jpg",
-          "quote": "MkSaaS is so well designed that even with a very poor knowledge of web design you can do miracles. Let yourself be seduced!"
+          "quote": "The next useful moves are batch parsing, API access, and better failure reporting, not more template pages."
         }
       }
     },
     "stats": {
-      "title": "Stats",
-      "subtitle": "MkSaaS in numbers",
-      "description": "MkSaaS lets you make AI SaaS in days, simply and effortlessly",
+      "title": "Signals",
+      "subtitle": "What matters for this product",
+      "description": "AwemeFlow should be judged by parser usefulness, repeat usage, and deployment speed rather than generic SaaS vanity metrics.",
       "items": {
         "item-1": {
-          "title": "Stars on GitHub"
+          "title": "Parse success rate"
         },
         "item-2": {
-          "title": "Active Users"
+          "title": "Repeat usage"
         },
         "item-3": {
-          "title": "Powered Apps"
+          "title": "Workflow adoption"
         }
       }
     },
     "calltoaction": {
-      "title": "Start Building",
-      "description": "MkSaaS lets you make AI SaaS in days, simply and effortlessly",
-      "primaryButton": "Get Started",
-      "secondaryButton": "See Demo"
+      "title": "Start with a cleaner parser product",
+      "description": "Use the current site to validate demand, collect failed samples, and prepare for API, batch, and team layers.",
+      "primaryButton": "Open parser",
+      "secondaryButton": "Join beta"
     }
   }
 }

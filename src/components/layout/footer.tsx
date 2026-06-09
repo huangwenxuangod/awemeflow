@@ -3,7 +3,6 @@
 import Container from '@/components/layout/container';
 import { Logo } from '@/components/layout/logo';
 import { ModeSwitcherHorizontal } from '@/components/layout/mode-switcher-horizontal';
-import BuiltWithButton from '@/components/shared/built-with-button';
 import { useFooterLinks } from '@/config/footer-config';
 import { useSocialLinks } from '@/config/social-config';
 import { LocaleLink, useLocalePathname } from '@/i18n/navigation';
@@ -37,29 +36,28 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
               </p>
 
               {/* social links */}
-              <nav
-                aria-label="Social links"
-                className="flex items-center gap-4 py-2"
-              >
-                <div className="flex items-center gap-2">
-                  {socialLinks?.map((link) => (
-                    <a
-                      key={link.title}
-                      href={link.href || '#'}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={link.title}
-                      className="border border-border inline-flex size-8 items-center
-                          justify-center rounded-full hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all duration-200"
-                    >
-                      {link.icon ? link.icon : null}
-                    </a>
-                  ))}
-                </div>
-              </nav>
-
-              {/* built with button */}
-              <BuiltWithButton />
+              {socialLinks.length > 0 ? (
+                <nav
+                  aria-label="Social links"
+                  className="flex items-center gap-4 py-2"
+                >
+                  <div className="flex items-center gap-2">
+                    {socialLinks?.map((link) => (
+                      <a
+                        key={link.title}
+                        href={link.href || '#'}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={link.title}
+                        className="border border-border inline-flex size-8 items-center
+                            justify-center rounded-full hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all duration-200"
+                      >
+                        {link.icon ? link.icon : null}
+                      </a>
+                    ))}
+                  </div>
+                </nav>
+              ) : null}
             </div>
           </div>
 

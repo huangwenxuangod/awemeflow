@@ -20,11 +20,6 @@ import { Providers } from './providers';
 
 import '@/styles/globals.css';
 
-interface LocaleLayoutProps {
-  children: ReactNode;
-  params: Promise<{ locale: Locale }>;
-}
-
 /**
  * 1. Locale Layout
  * https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing#layout
@@ -35,7 +30,7 @@ interface LocaleLayoutProps {
 export default async function LocaleLayout({
   children,
   params,
-}: LocaleLayoutProps) {
+}: LayoutProps<'/[locale]'>) {
   const { locale } = await params;
 
   // Ensure that the incoming `locale` is valid

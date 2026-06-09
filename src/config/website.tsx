@@ -21,13 +21,13 @@ export const websiteConfig: WebsiteConfig = {
       logoDark: '/logo-dark.png',
     },
     social: {
-      github: 'https://github.com/MkSaaSHQ',
-      twitter: 'https://mksaas.link/twitter',
-      blueSky: 'https://mksaas.link/bsky',
-      discord: 'https://mksaas.link/discord',
-      mastodon: 'https://mksaas.link/mastodon',
-      linkedin: 'https://mksaas.link/linkedin',
-      youtube: 'https://mksaas.link/youtube',
+      github: '',
+      twitter: '',
+      blueSky: '',
+      discord: '',
+      mastodon: '',
+      linkedin: '',
+      youtube: '',
     },
   },
   features: {
@@ -55,33 +55,33 @@ export const websiteConfig: WebsiteConfig = {
     enableDeleteUser: true,
   },
   i18n: {
-    defaultLocale: 'en',
+    defaultLocale: 'zh',
     locales: {
-      en: {
-        flag: '🇺🇸',
-        name: 'English',
-        hreflang: 'en',
-      },
       zh: {
         flag: '🇨🇳',
         name: '中文',
         hreflang: 'zh-CN',
       },
+      en: {
+        flag: '🇺🇸',
+        name: 'English',
+        hreflang: 'en',
+      },
     },
   },
   blog: {
-    enable: true,
+    enable: false,
     paginationSize: 6,
     relatedPostsSize: 3,
   },
   docs: {
-    enable: true,
+    enable: false,
   },
   mail: {
     enable: true,
     provider: 'resend',
-    fromEmail: 'MkSaaS <support@example.com>',
-    supportEmail: 'MkSaaS <support@example.com>',
+    fromEmail: 'AwemeFlow <support@example.com>',
+    supportEmail: 'support@example.com',
   },
   newsletter: {
     enable: true,

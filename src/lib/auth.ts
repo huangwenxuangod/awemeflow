@@ -24,9 +24,12 @@ import { getBaseUrl, getUrlWithLocaleInCallbackUrl } from './urls';
  * https://mksaas.com/docs/auth
  * https://www.better-auth.com/docs/reference/options
  */
+const betterAuthSecret = getBetterAuthSecret();
+
 export const auth = betterAuth({
   baseURL: getBaseUrl(),
   appName: defaultMessages.Metadata.name,
+  secret: betterAuthSecret,
   database: drizzleAdapter(await getDb(), {
     provider: 'sqlite', // or "mysql", "sqlite"
   }),
@@ -229,4 +232,27 @@ async function onCreateUser(user: User) {
       }
     }
   }
+}
+
+function getBetterAuthSecret(): string {
+  const configuredSecret = process.env.BETTER_AUTH_SECRET?.trim();
+
+  if (configuredSecret) {
+    return configuredSecret;
+  }
+
+  const isProduction = process.env.NODE_ENV === 'production';
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+
+  if (!isProduction || isBuildPhase) {
+    const baseUrl = getBaseUrl();
+    console.warn(
+      'BETTER_AUTH_SECRET is not set; using a deterministic development secret.'
+    );
+    return `dev-secret:${baseUrl}`;
+  }
+
+  throw new Error(
+    'BETTER_AUTH_SECRET is required in production. Please set it in the environment.'
+  );
 }

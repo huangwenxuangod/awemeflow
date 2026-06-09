@@ -5,7 +5,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "mksaas-template-cloudflare-d1",
+  "name": "awemeflow",
   "compatibility_date": "2025-10-08",
   "compatibility_flags": [
     // Enable Node.js API

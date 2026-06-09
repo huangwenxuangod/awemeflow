@@ -1,16 +1,4 @@
-import CallToActionSection from '@/components/blocks/calltoaction/calltoaction';
-import FaqSection from '@/components/blocks/faqs/faqs';
-import FeaturesSection from '@/components/blocks/features/features';
-import Features2Section from '@/components/blocks/features/features2';
-import HeroSection from '@/components/blocks/hero/hero';
-import IntegrationSection from '@/components/blocks/integration/integration';
-import Integration2Section from '@/components/blocks/integration/integration2';
-import LogoCloud from '@/components/blocks/logo-cloud/logo-cloud';
-import PricingSection from '@/components/blocks/pricing/pricing';
-import StatsSection from '@/components/blocks/stats/stats';
-import TestimonialsSection from '@/components/blocks/testimonials/testimonials';
-import CrispChat from '@/components/chatbox/crisp-chat';
-import { NewsletterCard } from '@/components/newsletter/newsletter-card';
+import { DouyinHomePageClient } from '@/components/home/douyin-homepage-client';
 import { constructMetadata } from '@/lib/metadata';
 import type { Metadata } from 'next';
 import type { Locale } from 'next-intl';
@@ -40,35 +28,11 @@ interface HomePageProps {
 }
 
 export default async function HomePage(_props: HomePageProps) {
+  const { locale } = await _props.params;
+
   return (
-    <>
-      <div className="flex flex-col">
-        <HeroSection />
-
-        <LogoCloud />
-
-        <FeaturesSection />
-
-        <Features2Section />
-
-        <CallToActionSection />
-
-        <StatsSection />
-
-        <IntegrationSection />
-
-        <Integration2Section />
-
-        <PricingSection />
-
-        <FaqSection />
-
-        <TestimonialsSection />
-
-        <NewsletterCard />
-
-        <CrispChat />
-      </div>
-    </>
+    <div id="top" className="flex flex-col">
+      <DouyinHomePageClient locale={locale} />
+    </div>
   );
 }
