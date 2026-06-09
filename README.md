@@ -56,7 +56,7 @@ corepack pnpm deploy
 
 ### 1. Configure Worker + D1
 
-Check [wrangler.jsonc](D:/dev/my-project/douyin/mksaas-cloudflare-d1/wrangler.jsonc):
+Check [wrangler.jsonc](D:/dev/my-project/douyin/awemeflow/wrangler.jsonc):
 
 - Worker name
 - D1 binding `DB`
@@ -83,7 +83,7 @@ At minimum, review:
 
 Reference template:
 
-- [env.example](D:/dev/my-project/douyin/mksaas-cloudflare-d1/env.example)
+- [env.example](D:/dev/my-project/douyin/awemeflow/env.example)
 
 For production secrets on Cloudflare, use Wrangler secrets or the Cloudflare dashboard.
 
@@ -130,6 +130,6 @@ What still needs your production decision before real launch:
 
 ## Related docs
 
-- [docs/DOUYIN_CLOUDFLARE.md](D:/dev/my-project/douyin/mksaas-cloudflare-d1/docs/DOUYIN_CLOUDFLARE.md)
-- [wrangler.jsonc](D:/dev/my-project/douyin/mksaas-cloudflare-d1/wrangler.jsonc)
-- [AGENTS.md](D:/dev/my-project/douyin/mksaas-cloudflare-d1/AGENTS.md)
+- [docs/DOUYIN_CLOUDFLARE.md](D:/dev/my-project/douyin/awemeflow/docs/DOUYIN_CLOUDFLARE.md)
+- [wrangler.jsonc](D:/dev/my-project/douyin/awemeflow/wrangler.jsonc)
+- [AGENTS.md](D:/dev/my-project/douyin/awemeflow/AGENTS.md)

@@ -64,13 +64,13 @@ Important:
 
 ## High-priority files
 
-- [src/components/home/douyin-homepage-client.tsx](D:/dev/my-project/douyin/mksaas-cloudflare-d1/src/components/home/douyin-homepage-client.tsx)
-- [src/app/[locale]/(marketing)/(home)/page.tsx](D:/dev/my-project/douyin/mksaas-cloudflare-d1/src/app/[locale]/(marketing)/(home)/page.tsx)
-- [src/config/website.tsx](D:/dev/my-project/douyin/mksaas-cloudflare-d1/src/config/website.tsx)
-- [messages/zh.json](D:/dev/my-project/douyin/mksaas-cloudflare-d1/messages/zh.json)
-- [messages/en.json](D:/dev/my-project/douyin/mksaas-cloudflare-d1/messages/en.json)
-- [wrangler.jsonc](D:/dev/my-project/douyin/mksaas-cloudflare-d1/wrangler.jsonc)
-- [docs/DOUYIN_CLOUDFLARE.md](D:/dev/my-project/douyin/mksaas-cloudflare-d1/docs/DOUYIN_CLOUDFLARE.md)
+- [src/components/home/douyin-homepage-client.tsx](D:/dev/my-project/douyin/awemeflow/src/components/home/douyin-homepage-client.tsx)
+- [src/app/[locale]/(marketing)/(home)/page.tsx](D:/dev/my-project/douyin/awemeflow/src/app/[locale]/(marketing)/(home)/page.tsx)
+- [src/config/website.tsx](D:/dev/my-project/douyin/awemeflow/src/config/website.tsx)
+- [messages/zh.json](D:/dev/my-project/douyin/awemeflow/messages/zh.json)
+- [messages/en.json](D:/dev/my-project/douyin/awemeflow/messages/en.json)
+- [wrangler.jsonc](D:/dev/my-project/douyin/awemeflow/wrangler.jsonc)
+- [docs/DOUYIN_CLOUDFLARE.md](D:/dev/my-project/douyin/awemeflow/docs/DOUYIN_CLOUDFLARE.md)
 
 ## Decision default
 
