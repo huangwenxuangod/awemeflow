@@ -1,7 +1,5 @@
 'use client';
 
-import { PostHogProvider } from '@/analytics/posthog-analytics';
-import { QueryProvider } from '@/components/providers/query-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { websiteConfig } from '@/config/website';
 import { ThemeProvider } from 'next-themes';
@@ -25,17 +23,13 @@ export function Providers({ children }: ProvidersProps) {
   const defaultMode = websiteConfig.ui.mode?.defaultMode ?? 'system';
 
   return (
-    <PostHogProvider>
-      <QueryProvider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme={defaultMode}
-          enableSystem={true}
-          disableTransitionOnChange
-        >
-          <TooltipProvider>{children}</TooltipProvider>
-        </ThemeProvider>
-      </QueryProvider>
-    </PostHogProvider>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme={defaultMode}
+      enableSystem={true}
+      disableTransitionOnChange
+    >
+      <TooltipProvider>{children}</TooltipProvider>
+    </ThemeProvider>
   );
 }

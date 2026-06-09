@@ -55,14 +55,7 @@
    * databases, object storage, AI inference, real-time communication and more.
    * https://developers.cloudflare.com/workers/runtime-apis/bindings/
    */
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "mksaas-template-cloudflare-d1",
-      "database_id": "24607b1c-ed60-4be4-9d46-994b113b0b7f",
-      "migrations_dir": "./src/db/migrations"
-    }
-  ],
+  "d1_databases": [],
 
   /**
    * Environment Variables

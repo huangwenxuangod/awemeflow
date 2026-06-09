@@ -1,11 +1,8 @@
-import { CustomPage } from '@/components/page/custom-page';
+import Container from '@/components/layout/container';
 import { constructMetadata } from '@/lib/metadata';
-import { pagesSource } from '@/lib/source';
-import type { NextPageProps } from '@/types/next-page-props';
 import type { Metadata } from 'next';
 import type { Locale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
-import { notFound } from 'next/navigation';
 
 export async function generateMetadata({
   params,
@@ -13,37 +10,25 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale }>;
 }): Promise<Metadata | undefined> {
   const { locale } = await params;
-  const page = pagesSource.getPage(['privacy-policy'], locale);
-
-  if (!page) {
-    console.warn(
-      `generateMetadata, page not found for privacy-policy, locale: ${locale}`
-    );
-    return {};
-  }
-
   const t = await getTranslations({ locale, namespace: 'Metadata' });
 
   return constructMetadata({
-    title: page.data.title + ' | ' + t('title'),
-    description: page.data.description,
+    title: `Privacy Policy | ${t('title')}`,
+    description: 'Privacy policy for AwemeFlow.',
     locale,
     pathname: '/privacy',
   });
 }
 
-export default async function PrivacyPolicyPage(props: NextPageProps) {
-  const params = await props.params;
-  if (!params) {
-    notFound();
-  }
-
-  const locale = params.locale as string;
-  const page = pagesSource.getPage(['privacy-policy'], locale);
-
-  if (!page) {
-    notFound();
-  }
-
-  return <CustomPage page={page} />;
+export default async function PrivacyPolicyPage() {
+  return (
+    <Container className="py-16 px-4">
+      <div className="mx-auto max-w-3xl space-y-6">
+        <h1 className="text-3xl font-bold tracking-tight">Privacy Policy</h1>
+        <p className="text-muted-foreground">
+          AwemeFlow stores only the minimum operational data needed to process requests, secure the service, and respond to support or abuse issues.
+        </p>
+      </div>
+    </Container>
+  );
 }

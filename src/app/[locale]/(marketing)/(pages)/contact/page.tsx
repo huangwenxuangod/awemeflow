@@ -1,4 +1,3 @@
-import { ContactFormCard } from '@/components/contact/contact-form-card';
 import Container from '@/components/layout/container';
 import { Badge } from '@/components/ui/badge';
 import { constructMetadata } from '@/lib/metadata';
@@ -26,21 +25,23 @@ export async function generateMetadata({
 const supportCopy = {
   zh: {
     badge: '支持入口',
-    heading: '把异常链接、合作需求和接入问题，直接汇到一个入口里。',
+    heading: '把解析失败样本、合作需求和接入问题，统一收到一个轻入口里。',
     points: [
       '解析失败样本反馈',
-      '批量解析与团队协作需求',
-      'API 接入、商业合作与定制方案',
+      '批量解析和团队协作需求',
+      'API 接入与商业合作',
     ],
+    email: 'support@example.com',
   },
   en: {
     badge: 'Support entry',
-    heading: 'Keep failed samples, integration asks, and commercial requests in one clear channel.',
+    heading: 'Keep failed samples, integration asks, and commercial requests in one lightweight channel.',
     points: [
-      'Failed parse examples',
+      'Failed parse samples',
       'Batch parsing and team workflow requests',
-      'API access, commercial questions, and custom integrations',
+      'API access and commercial partnerships',
     ],
+    email: 'support@example.com',
   },
 } as const;
 
@@ -56,7 +57,7 @@ export default async function ContactPage({
   return (
     <div className="bg-[#07111f] text-slate-100">
       <Container className="px-4 py-16">
-        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[0.95fr_1.05fr]">
           <section className="space-y-6">
             <Badge className="rounded-full border border-sky-300/20 bg-sky-300/10 px-4 py-1 text-sky-100">
               {copy.badge}
@@ -78,8 +79,19 @@ export default async function ContactPage({
             </div>
           </section>
 
-          <section className="rounded-[2rem] border border-white/10 bg-[#0c1726] p-2">
-            <ContactFormCard />
+          <section className="rounded-[2rem] border border-white/10 bg-[#0c1726] p-8">
+            <div className="text-sm uppercase tracking-[0.24em] text-slate-400">
+              Email
+            </div>
+            <a
+              href={`mailto:${copy.email}`}
+              className="mt-4 block text-2xl font-semibold text-white"
+            >
+              {copy.email}
+            </a>
+            <p className="mt-6 text-sm leading-7 text-slate-300">
+              Send failed samples, target volumes, expected workflow shape, and the region where you need the parser to stay stable.
+            </p>
           </section>
         </div>
       </Container>
