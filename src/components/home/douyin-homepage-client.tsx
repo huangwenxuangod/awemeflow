@@ -4,17 +4,16 @@ import { LocaleLink } from '@/i18n/navigation';
 import type { DouyinInputType, DouyinVideoResult } from '@/lib/douyin/types';
 import { cn } from '@/lib/utils';
 import {
-  CheckCircle2Icon,
   CheckIcon,
-  CircleAlertIcon,
+  ClipboardIcon,
   CopyIcon,
-  ExternalLinkIcon,
-  FileTextIcon,
-  FilmIcon,
-  Link2Icon,
+  DownloadIcon,
+  GlobeIcon,
+  ImageIcon,
   LoaderCircleIcon,
   SearchIcon,
-  ShieldCheckIcon,
+  SparklesIcon,
+  VideoIcon,
 } from 'lucide-react';
 import { useMemo, useState, useTransition } from 'react';
 
@@ -37,112 +36,65 @@ interface ApiErrorResponse {
 
 const ratioOptions = ['1080p', '720p', '540p'] as const;
 
-const featureToneClasses = [
-  'bg-[#f5f7ff]',
-  'bg-[#f8f5ff]',
-  'bg-[#f3fbff]',
-  'bg-[#f9f9f9]',
-] as const;
-
-const iconToneClasses = [
-  'bg-[#e6ebff] text-[#3f5efb]',
-  'bg-[#efe7ff] text-[#7c3aed]',
-  'bg-[#e7f6ff] text-[#0f7ec7]',
-  'bg-[#ededed] text-[#111111]',
-] as const;
-
-type ParseStage = 'idle' | 'identify' | 'normalize' | 'resolve' | 'done';
-
 const content = {
   zh: {
-    badge: 'AwemeFlow',
-    title: '抖音视频解析工作台',
+    brand: 'AwemeFlow',
+    home: '首页',
+    section: '抖音/图集',
+    feedback: '问题反馈',
+    language: 'ZH',
+    title: '免费解析去水印工具',
     description:
-      '把短链、长链、分享文案或作品 ID 统一识别为标准作品链接，并直接返回视频地址、封面和作者信息。',
-    inputPlaceholder: '请粘贴抖音分享链接、分享文案或作品 ID',
-    parseButton: '开始解析',
-    parsingButton: '解析中',
-    ratioLabel: '清晰度',
-    examplesLabel: '示例输入',
-    examples: [
-      'https://www.douyin.com/video/7380678787580562707',
-      'https://www.iesdouyin.com/share/video/7380678787580562707/',
-      '作品 ID 7380678787580562707',
-    ],
-    trustBar: ['统一转标准长链', '无需登录', '结果可复制', '失败原因明确'],
-    featureTitle: '支持这些输入方式',
-    featureCards: [
-      ['短链接识别', '先展开抖音短链，再尽量统一收敛为标准作品链接。'],
-      ['视频页链接', '直接识别视频详情页，优先走最稳定的作品解析链路。'],
-      ['分享文案识别', '整段分享文案也可以贴进来，系统会先提取可解析对象。'],
-      ['作品 ID 直达', '作品 ID 会直接转成标准长链，适合批量和程序化处理。'],
-    ],
-    stepsTitle: '当前解析流程',
-    steps: [
-      ['识别输入类型', '先判断你贴进来的是作品 ID、视频页、短链还是分享文案。'],
-      ['标准化作品链接', '把可识别输入尽量统一转换成标准长链，减少后续歧义。'],
-      ['生成可操作结果', '清晰展示作者、封面、标准长链和视频地址，支持直接复制。'],
-    ],
-    stageTitle: '解析进度',
-    stageItems: [
-      ['identify', '识别输入类型'],
-      ['normalize', '统一标准长链'],
-      ['resolve', '获取作品与视频地址'],
-      ['done', '结果准备完成'],
-    ] as const,
-    workbenchTitle: '解析结果工作台',
-    resultEmpty: '解析完成后，这里会展示标准作品链接、视频地址和核心元数据。',
-    resultLive: '实时结果',
-    resultSample: '演示结果',
-    resultHint: '优先确认标准长链，再决定复制视频地址、打开原页或继续下载处理。',
-    openVideo: '打开视频',
-    openSource: '打开原作品',
-    copyVideo: '复制视频地址',
-    copyCanonical: '复制标准长链',
-    copied: '已复制',
-    errorEmpty: '先粘贴一个抖音链接、分享文案或作品 ID',
-    errorFallback: '解析失败，请稍后重试',
+      '免费解析抖音视频和图集，尽量统一转成长链，直接给你可见、可复制、可下载的结果。',
+    placeholder: '请粘贴抖音视频链接、分享文案或作品 ID',
+    paste: '粘贴',
+    clear: '清除',
+    parse: '解析视频',
+    parsing: '解析中',
+    resultTitle: '解析结果',
+    emptyResult:
+      '先贴一个可解析的抖音链接。解析成功后，这里会直接展示标题、长链、视频地址、封面和下载按钮。',
+    detailTitle: '已识别内容',
     canonicalLabel: '标准长链',
-    resolvedLabel: '解析入口',
-    stagePending: '等待开始',
-    stageRunning: '处理中',
-    stageDone: '已完成',
-    statusTitle: '当前识别',
-    statusDetected: '已识别',
-    statusFallback: '等待输入',
-    faqTitle: '常见问题',
-    faqs: [
-      [
-        '为什么要统一转成长链？',
-        '因为作品 ID 和标准长链最稳定，统一后结果更清楚，也更方便复制和追踪。',
-      ],
-      [
-        '为什么有些短链还是不行？',
-        '部分短链会跳到用户主页而不是作品页，这类输入在纯后端环境里无法稳定还原成具体作品。',
-      ],
-      [
-        '最佳输入方式是什么？',
-        '优先使用视频详情页链接、分享页链接或作品 ID，这三种是目前最稳定的主链路。',
-      ],
+    sourceLabel: '解析入口',
+    videoLabel: '视频地址',
+    inputTypeLabel: '输入类型',
+    authorLabel: '作者',
+    resolutionLabel: '画面尺寸',
+    publishedLabel: '发布时间',
+    downloadVideo: '下载无水印视频',
+    downloadImage: '下载封面图片',
+    copyLink: '复制链接',
+    copyVideo: '复制视频地址',
+    copied: '已复制',
+    qualityTitle: '多清晰度选项',
+    qualityCopy: '复制',
+    features: [
+      ['完全免费不限次数', '不做花活，先把解析和下载打通。'],
+      ['无需注册/登录', '打开就能用，不让用户先过一堆门槛。'],
+      ['直接看到解析结果', '标题、长链、封面、下载入口都摆在眼前。'],
+      ['优先转成标准长链', '方便你确认解析到的到底是不是那条作品。'],
     ],
-    labels: {
-      author: '作者',
-      resolution: '分辨率',
-      format: '格式',
-      published: '发布时间',
-      bitrate: '码率',
-      source: '来源',
-      payload: '视频地址',
-      inputType: '输入类型',
+    howToTitle: '如何使用',
+    steps: [
+      ['复制链接', '从抖音复制视频链接、分享文案或者作品 ID。'],
+      ['粘贴解析', '粘贴到输入框，点击“解析视频”。'],
+      ['确认结果', '先看标题和标准长链，确认作品是不是你要的。'],
+      ['直接下载', '点击下载视频、复制视频地址，或者保存封面图片。'],
+    ],
+    typeLabels: {
+      aweme_id: '作品 ID',
+      video_url: '视频详情页链接',
+      share_video_url: '分享视频页链接',
+      short_link: '抖音短链',
+      share_text: '分享文案',
     },
-    sourceValue: '抖音分享页',
-    contactLabel: '联系',
     sample: {
       awemeId: '7380678787580562707',
       canonicalUrl: 'https://www.douyin.com/video/7380678787580562707',
       resolvedUrl: 'https://www.iesdouyin.com/share/video/7380678787580562707/',
       inputType: 'video_url' as DouyinInputType,
-      description: '解析成功后，这里会展示标准作品链接和核心结果。',
+      description: '解析成功后，这里会直接显示作品标题和下载入口。',
       authorNickname: '示例作者',
       coverUrl: '',
       videoUrl: 'https://aweme.snssdk.com/aweme/v1/play/?video_id=sample-token',
@@ -161,96 +113,69 @@ const content = {
       authorUid: '',
       authorSecUid: '',
     },
+    errors: {
+      empty: '先粘贴一个抖音链接、分享文案或作品 ID',
+      fallback: '解析失败，请稍后重试',
+    },
   },
   en: {
-    badge: 'AwemeFlow',
-    title: 'Douyin Parsing Workbench',
+    brand: 'AwemeFlow',
+    home: 'Home',
+    section: 'Douyin/Gallery',
+    feedback: 'Feedback',
+    language: 'EN',
+    title: 'Free Douyin parser',
     description:
-      'Normalize short links, long links, share text, or aweme IDs into a canonical asset URL, then expose the video URL, cover, and author data clearly.',
-    inputPlaceholder: 'Paste a Douyin share link, share text, or aweme ID',
-    parseButton: 'Parse now',
-    parsingButton: 'Parsing',
-    ratioLabel: 'Quality',
-    examplesLabel: 'Examples',
-    examples: [
-      'https://www.douyin.com/video/7380678787580562707',
-      'https://www.iesdouyin.com/share/video/7380678787580562707/',
-      'aweme_id 7380678787580562707',
-    ],
-    trustBar: ['Canonical long URL first', 'No login', 'Copy-ready output', 'Clear failure reasons'],
-    featureTitle: 'Supported input types',
-    featureCards: [
-      ['Short links', 'Expand Douyin short links first, then normalize them into canonical asset URLs when possible.'],
-      ['Video page URLs', 'Use the most stable route by resolving full video detail URLs directly.'],
-      ['Share text parsing', 'Paste the entire share message and the parser will extract the parseable asset.'],
-      ['Aweme IDs', 'Raw aweme IDs are converted into canonical long URLs immediately.'],
-    ],
-    stepsTitle: 'Current parsing flow',
-    steps: [
-      ['Identify the input', 'Detect whether the input is an aweme ID, video URL, short link, or share text.'],
-      ['Normalize the asset URL', 'Convert the supported input into a canonical long URL whenever possible.'],
-      ['Generate action-ready output', 'Show author, cover, canonical URL, and video URL in one clear workbench.'],
-    ],
-    stageTitle: 'Parsing progress',
-    stageItems: [
-      ['identify', 'Identify input type'],
-      ['normalize', 'Normalize canonical URL'],
-      ['resolve', 'Fetch asset and video URL'],
-      ['done', 'Prepare result'],
-    ] as const,
-    workbenchTitle: 'Result workbench',
-    resultEmpty: 'After parsing, this area will show the canonical asset URL, video URL, and core metadata.',
-    resultLive: 'Live result',
-    resultSample: 'Sample result',
-    resultHint: 'Confirm the canonical URL first, then copy the video URL, open the source page, or continue into download handling.',
-    openVideo: 'Open video',
-    openSource: 'Open source page',
-    copyVideo: 'Copy video URL',
-    copyCanonical: 'Copy canonical URL',
-    copied: 'Copied',
-    errorEmpty: 'Paste a Douyin link, share text, or aweme ID first',
-    errorFallback: 'Parsing failed, please try again',
+      'Parse Douyin videos and galleries, normalize to canonical long URLs when possible, and expose clear download-ready results.',
+    placeholder: 'Paste a Douyin video URL, share text, or aweme ID',
+    paste: 'Paste',
+    clear: 'Clear',
+    parse: 'Parse',
+    parsing: 'Parsing',
+    resultTitle: 'Result',
+    emptyResult:
+      'Paste a valid Douyin asset first. After parsing, this area will show the title, canonical URL, video URL, cover, and download actions.',
+    detailTitle: 'Detected asset',
     canonicalLabel: 'Canonical URL',
-    resolvedLabel: 'Resolved from',
-    stagePending: 'Pending',
-    stageRunning: 'Running',
-    stageDone: 'Done',
-    statusTitle: 'Detected input',
-    statusDetected: 'Detected',
-    statusFallback: 'Waiting for input',
-    faqTitle: 'FAQs',
-    faqs: [
-      [
-        'Why normalize into a long URL?',
-        'Aweme IDs and canonical long URLs are the clearest and most stable asset representations for users and systems.',
-      ],
-      [
-        'Why do some short links still fail?',
-        'Some short links redirect to user profile pages instead of a specific asset page, which cannot be resolved reliably in a server-only flow.',
-      ],
-      [
-        'What is the best input type?',
-        'Prefer a video detail URL, a share-video page URL, or a raw aweme ID for the most stable parsing path.',
-      ],
+    sourceLabel: 'Resolved from',
+    videoLabel: 'Video URL',
+    inputTypeLabel: 'Input type',
+    authorLabel: 'Author',
+    resolutionLabel: 'Resolution',
+    publishedLabel: 'Published',
+    downloadVideo: 'Download video',
+    downloadImage: 'Download cover',
+    copyLink: 'Copy link',
+    copyVideo: 'Copy video URL',
+    copied: 'Copied',
+    qualityTitle: 'Quality options',
+    qualityCopy: 'Copy',
+    features: [
+      ['Free to use', 'Keep the product focused on parsing and download first.'],
+      ['No signup', 'Open the page and use it immediately.'],
+      ['Visible results', 'Title, canonical URL, cover, and downloads stay upfront.'],
+      ['Canonical URL first', 'Make it obvious which asset the parser actually resolved.'],
     ],
-    labels: {
-      author: 'Author',
-      resolution: 'Resolution',
-      format: 'Format',
-      published: 'Published',
-      bitrate: 'Bitrate',
-      source: 'Source',
-      payload: 'Video URL',
-      inputType: 'Input type',
+    howToTitle: 'How it works',
+    steps: [
+      ['Copy a link', 'Copy a Douyin URL, share text, or aweme ID.'],
+      ['Paste and parse', 'Paste the input and click parse.'],
+      ['Confirm the asset', 'Check the title and canonical URL first.'],
+      ['Download directly', 'Download the video, copy the video URL, or save the cover image.'],
+    ],
+    typeLabels: {
+      aweme_id: 'Aweme ID',
+      video_url: 'Video detail URL',
+      share_video_url: 'Share video URL',
+      short_link: 'Short link',
+      share_text: 'Share text',
     },
-    sourceValue: 'Douyin share page',
-    contactLabel: 'Contact',
     sample: {
       awemeId: '7380678787580562707',
       canonicalUrl: 'https://www.douyin.com/video/7380678787580562707',
       resolvedUrl: 'https://www.iesdouyin.com/share/video/7380678787580562707/',
       inputType: 'video_url' as DouyinInputType,
-      description: 'A successful parse will show the canonical asset URL and the core result set here.',
+      description: 'Successful parsing will show the asset title and download actions here.',
       authorNickname: 'Sample author',
       coverUrl: '',
       videoUrl: 'https://aweme.snssdk.com/aweme/v1/play/?video_id=sample-token',
@@ -258,7 +183,7 @@ const content = {
       height: 1920,
       format: 'mp4',
       sourcePage: 'https://www.douyin.com/video/sample',
-      createTimeText: 'Waiting for a real parse result',
+      createTimeText: 'Waiting for real result',
       bitRate: 0,
       createTime: null,
       shareUrl: 'https://www.douyin.com/video/sample',
@@ -269,32 +194,12 @@ const content = {
       authorUid: '',
       authorSecUid: '',
     },
+    errors: {
+      empty: 'Paste a Douyin link, share text, or aweme ID first',
+      fallback: 'Parsing failed, please try again',
+    },
   },
 } as const;
-
-function formatBitrate(bitRate: number) {
-  if (!bitRate) {
-    return 'N/A';
-  }
-
-  if (bitRate >= 1_000_000) {
-    return `${(bitRate / 1_000_000).toFixed(1)} Mbps`;
-  }
-
-  if (bitRate >= 1_000) {
-    return `${Math.round(bitRate / 1_000)} kbps`;
-  }
-
-  return `${bitRate} bps`;
-}
-
-function truncateUrl(url: string) {
-  if (url.length <= 88) {
-    return url;
-  }
-
-  return `${url.slice(0, 54)}...${url.slice(-24)}`;
-}
 
 function getApiErrorMessage(
   payload: ApiSuccessResponse | ApiErrorResponse,
@@ -322,7 +227,7 @@ function detectInputType(value: string): DouyinInputType | null {
     return 'share_video_url';
   }
 
-  if (trimmed.includes('/video/')) {
+  if (trimmed.includes('/video/') || trimmed.includes('modal_id=')) {
     return 'video_url';
   }
 
@@ -333,45 +238,53 @@ function detectInputType(value: string): DouyinInputType | null {
   return 'share_text';
 }
 
-function getInputTypeLabel(type: DouyinInputType | null, locale: SupportedLocale) {
-  const map = {
-    zh: {
-      aweme_id: '作品 ID',
-      video_url: '视频详情页链接',
-      share_video_url: '分享视频页链接',
-      short_link: '抖音短链',
-      share_text: '分享文案',
-    },
-    en: {
-      aweme_id: 'Aweme ID',
-      video_url: 'Video detail URL',
-      share_video_url: 'Share-video URL',
-      short_link: 'Short link',
-      share_text: 'Share text',
-    },
-  } as const;
+function formatFileSize(bytes: number) {
+  if (!bytes || bytes <= 0) {
+    return '';
+  }
 
-  return type ? map[locale][type] : '';
+  const mb = bytes / 1024 / 1024;
+  if (mb >= 1024) {
+    return `${(mb / 1024).toFixed(1)}GB`;
+  }
+
+  return `${mb.toFixed(1)}MB`;
 }
 
-function getStageState(stage: ParseStage, current: ParseStage) {
-  const order: ParseStage[] = ['idle', 'identify', 'normalize', 'resolve', 'done'];
-  const currentIndex = order.indexOf(current);
-  const stageIndex = order.indexOf(stage);
+function buildQualityRows(result: DouyinVideoResult) {
+  const baseSize = result.dataSize || 0;
+  const width = result.width || 0;
+  const height = result.height || 0;
 
-  if (current === 'idle') {
-    return 'pending';
+  return ratioOptions.map((ratio, index) => {
+    const scale =
+      ratio === '1080p' ? 1 : ratio === '720p' ? 0.78 : 0.58;
+    const nextWidth = width ? Math.round(width * scale) : 0;
+    const nextHeight = height ? Math.round(height * scale) : 0;
+    const size = baseSize ? Math.round(baseSize * scale * scale) : 0;
+
+    return {
+      ratio,
+      label:
+        nextWidth && nextHeight
+          ? `${ratio} (${nextWidth}x${nextHeight})`
+          : ratio,
+      sizeLabel: formatFileSize(size),
+      url: appendRatio(result.videoUrl, ratio),
+      active: ratio === '1080p',
+      index,
+    };
+  });
+}
+
+function appendRatio(url: string, ratio: string) {
+  try {
+    const next = new URL(url);
+    next.searchParams.set('ratio', ratio);
+    return next.toString();
+  } catch {
+    return url;
   }
-
-  if (stageIndex < currentIndex) {
-    return 'done';
-  }
-
-  if (stageIndex === currentIndex) {
-    return 'running';
-  }
-
-  return 'pending';
 }
 
 export function DouyinHomePageClient({
@@ -383,27 +296,27 @@ export function DouyinHomePageClient({
   const [ratio, setRatio] = useState<(typeof ratioOptions)[number]>('1080p');
   const [result, setResult] = useState<DouyinVideoResult | null>(null);
   const [error, setError] = useState('');
-  const [copiedField, setCopiedField] = useState<'video' | 'canonical' | null>(null);
-  const [parseStage, setParseStage] = useState<ParseStage>('idle');
+  const [copiedField, setCopiedField] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const preview = result ?? copy.sample;
   const inferredType = useMemo(() => detectInputType(input), [input]);
   const activeType = result?.inputType ?? inferredType;
+  const qualityRows = useMemo(
+    () => (result ? buildQualityRows(result) : []),
+    [result]
+  );
 
   const handleParse = (value?: string) => {
     const nextValue = (value ?? input).trim();
 
     if (!nextValue) {
-      setError(copy.errorEmpty);
-      setParseStage('idle');
+      setError(copy.errors.empty);
       return;
     }
 
     setInput(nextValue);
     setError('');
     setCopiedField(null);
-    setParseStage('identify');
 
     startTransition(() => {
       void parseInput(nextValue);
@@ -412,7 +325,6 @@ export function DouyinHomePageClient({
 
   const parseInput = async (nextValue: string) => {
     try {
-      setParseStage('normalize');
       const response = await fetch('/api/video', {
         method: 'POST',
         headers: {
@@ -424,489 +336,434 @@ export function DouyinHomePageClient({
         }),
       });
 
-      setParseStage('resolve');
-
       const payload =
         (await response.json()) as ApiSuccessResponse | ApiErrorResponse;
 
       if (!response.ok || payload.code !== 0 || !('data' in payload)) {
-        throw new Error(getApiErrorMessage(payload, copy.errorFallback));
+        throw new Error(getApiErrorMessage(payload, copy.errors.fallback));
       }
 
       setResult(payload.data);
-      setParseStage('done');
     } catch (parseError) {
       setResult(null);
       setError(
-        parseError instanceof Error ? parseError.message : copy.errorFallback
+        parseError instanceof Error ? parseError.message : copy.errors.fallback
       );
-      setParseStage('idle');
     }
   };
 
-  const handleCopy = async (field: 'video' | 'canonical', value: string) => {
-    if (!result || !value) {
+  const handlePaste = async () => {
+    const nextValue = await navigator.clipboard.readText();
+    if (!nextValue) {
+      return;
+    }
+    setInput(nextValue);
+    setError('');
+  };
+
+  const handleCopy = async (key: string, value: string) => {
+    if (!value) {
       return;
     }
 
     await navigator.clipboard.writeText(value);
-    setCopiedField(field);
-    window.setTimeout(() => setCopiedField(null), 1600);
+    setCopiedField(key);
+    window.setTimeout(() => setCopiedField(null), 1500);
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#111111]">
-      <section className="border-b border-[#ececec]">
-        <div className="mx-auto max-w-6xl px-4 pb-12 pt-14 sm:px-6 md:pb-16 lg:px-8 lg:pb-18">
-          <div className="mx-auto max-w-4xl text-center">
-            <div className="inline-flex items-center rounded-full border border-[#e8e8e8] bg-[#fafafa] px-4 py-2 text-xs font-medium text-[#4b5563]">
-              {copy.badge}
-            </div>
-            <h1 className="mt-6 text-4xl font-semibold tracking-tight text-[#111111] sm:text-5xl lg:text-6xl">
-              {copy.title}
-            </h1>
-            <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-[#6b7280] sm:text-lg">
-              {copy.description}
-            </p>
+    <div className="min-h-screen bg-white text-[#111827]">
+      <header className="sticky top-0 z-20 border-b border-[#f0f0f0] bg-white/95 backdrop-blur">
+        <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-10">
+            <LocaleLink
+              href="/"
+              className="text-[22px] font-bold tracking-tight text-[#7c3aed]"
+            >
+              {copy.brand}
+            </LocaleLink>
+            <nav className="hidden items-center gap-8 text-[15px] font-medium text-[#6b7280] sm:flex">
+              <span className="border-b-2 border-[#8b5cf6] pb-2 text-[#8b5cf6]">
+                {copy.home}
+              </span>
+              <span>{copy.section}</span>
+            </nav>
           </div>
 
-          <div className="mx-auto mt-10 max-w-6xl rounded-[24px] border border-[#e9e9e9] bg-white p-4 sm:p-5">
-            <div className="grid gap-5 xl:grid-cols-[1.08fr_0.92fr]">
-              <div className="rounded-[18px] border border-[#ececec] bg-[#fcfcfc] p-4 sm:p-5">
-                <div className="flex flex-col gap-3 lg:flex-row">
-                  <div className="flex min-h-[58px] flex-1 items-center rounded-[16px] border border-[#e5e7eb] bg-white px-4">
-                    <input
-                      value={input}
-                      onChange={(event) => setInput(event.target.value)}
-                      placeholder={copy.inputPlaceholder}
-                      className="h-12 w-full border-0 bg-transparent text-sm text-[#111111] outline-none placeholder:text-[#9ca3af] sm:text-[15px]"
-                    />
-                  </div>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              className="hidden h-11 items-center gap-2 rounded-full bg-[linear-gradient(135deg,#7c3aed,#a855f7)] px-5 text-sm font-medium text-white shadow-[0_10px_24px_rgba(139,92,246,0.28)] sm:inline-flex"
+            >
+              <SparklesIcon className="size-4" />
+              {copy.feedback}
+            </button>
+            <div className="inline-flex items-center gap-2 text-[15px] text-[#6b7280]">
+              <GlobeIcon className="size-4" />
+              {copy.language}
+            </div>
+          </div>
+        </div>
+      </header>
 
+      <main>
+        <section className="border-b border-[#f4f4f5]">
+          <div className="mx-auto max-w-6xl px-4 pb-14 pt-16 text-center sm:px-6 lg:px-8 lg:pb-16 lg:pt-20">
+            <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-[#111827] sm:text-5xl lg:text-[64px]">
+              {copy.title}
+            </h1>
+            <p className="mx-auto mt-5 max-w-4xl text-lg leading-8 text-[#6b7280]">
+              {copy.description}
+            </p>
+
+            <div className="mx-auto mt-12 max-w-3xl">
+              <div className="overflow-hidden rounded-[20px] border border-[#ececec] bg-white shadow-[0_12px_32px_rgba(17,24,39,0.06)]">
+                <div className="flex flex-col sm:flex-row">
+                  <input
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    placeholder={copy.placeholder}
+                    className="h-16 flex-1 border-0 px-5 text-base text-[#111827] outline-none placeholder:text-[#9ca3af]"
+                  />
+                  <button
+                    type="button"
+                    onClick={handlePaste}
+                    className="h-16 border-t border-[#f1f1f1] px-7 text-base font-medium text-[#4b5563] transition-colors hover:bg-[#fafafa] sm:border-l sm:border-t-0"
+                  >
+                    {copy.paste}
+                  </button>
                   <button
                     type="button"
                     onClick={() => handleParse()}
                     disabled={isPending}
-                    className="inline-flex h-[58px] shrink-0 items-center justify-center gap-2 rounded-[16px] bg-[#111111] px-6 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#222222] disabled:opacity-70 sm:px-7 sm:text-[15px]"
+                    className="h-16 bg-[#ff3b5c] px-8 text-base font-semibold text-white transition-colors hover:bg-[#ff244b] disabled:opacity-70"
                   >
-                    {isPending ? (
-                      <LoaderCircleIcon className="size-4 animate-spin" />
-                    ) : (
-                      <SearchIcon className="size-4" />
-                    )}
-                    {isPending ? copy.parsingButton : copy.parseButton}
+                    {isPending ? copy.parsing : copy.parse}
                   </button>
                 </div>
-
-                <div className="mt-4 flex flex-col gap-4 border-t border-[#efefef] pt-4">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs text-[#6b7280]">{copy.ratioLabel}</span>
-                    {ratioOptions.map((option) => (
-                      <button
-                        key={option}
-                        type="button"
-                        onClick={() => setRatio(option)}
-                        className={cn(
-                          'rounded-full border px-3 py-1.5 text-xs transition-colors duration-200',
-                          ratio === option
-                            ? 'border-[#111111] bg-[#111111] text-white'
-                            : 'border-[#e5e7eb] bg-white text-[#4b5563] hover:border-[#d1d5db] hover:text-[#111111]'
-                        )}
-                      >
-                        {option}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="rounded-[16px] border border-[#ececec] bg-white p-4">
-                    <div className="text-xs text-[#6b7280]">{copy.statusTitle}</div>
-                    <div className="mt-2 flex flex-wrap items-center gap-3">
-                      <div className="inline-flex items-center gap-2 rounded-full bg-[#f5f5f5] px-3 py-1.5 text-sm text-[#111111]">
-                        <CheckCircle2Icon className="size-4 text-[#16a34a]" />
-                        {activeType
-                          ? `${copy.statusDetected}：${getInputTypeLabel(activeType, pageLocale)}`
-                          : copy.statusFallback}
-                      </div>
-                      {preview.awemeId ? (
-                        <div className="rounded-full border border-[#e5e7eb] px-3 py-1.5 text-xs text-[#4b5563]">
-                          ID {preview.awemeId}
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-[#6b7280]">
-                    {copy.trustBar.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full bg-white px-3 py-1.5 text-[#4b5563]"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-[#6b7280]">
-                    <span>{copy.examplesLabel}</span>
-                    {copy.examples.map((example) => (
-                      <button
-                        key={example}
-                        type="button"
-                        onClick={() => handleParse(example)}
-                        className="rounded-full border border-[#e5e7eb] bg-white px-3 py-1.5 text-left text-[#4b5563] transition-colors duration-200 hover:border-[#d1d5db] hover:text-[#111111]"
-                      >
-                        {example}
-                      </button>
-                    ))}
-                  </div>
-
-                  {error ? (
-                    <div className="rounded-[14px] border border-[#fecaca] bg-[#fff7f7] px-4 py-3 text-sm text-[#b91c1c]">
-                      {error}
-                    </div>
-                  ) : null}
-                </div>
               </div>
 
-              <div className="rounded-[18px] border border-[#ececec] bg-[#fcfcfc] p-4 sm:p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <h2 className="text-base font-medium text-[#111111]">
-                    {copy.stageTitle}
-                  </h2>
-                  <div className="rounded-full border border-[#e5e7eb] bg-white px-3 py-1 text-xs text-[#4b5563]">
-                    {parseStage === 'done'
-                      ? copy.stageDone
-                      : isPending || parseStage !== 'idle'
-                        ? copy.stageRunning
-                        : copy.stagePending}
-                  </div>
-                </div>
-
-                <div className="mt-5 space-y-3">
-                  {copy.stageItems.map(([stageKey, label]) => {
-                    const state = getStageState(stageKey, parseStage);
-
-                    return (
-                      <div
-                        key={stageKey}
-                        className="flex items-center gap-3 rounded-[14px] border border-[#e9e9e9] bg-white px-4 py-3"
-                      >
-                        <div
-                          className={cn(
-                            'flex size-8 items-center justify-center rounded-full text-xs font-medium',
-                            state === 'done' &&
-                              'bg-[#111111] text-white',
-                            state === 'running' &&
-                              'bg-[#e8eefc] text-[#1d4ed8]',
-                            state === 'pending' &&
-                              'bg-[#f3f4f6] text-[#6b7280]'
-                          )}
-                        >
-                          {state === 'done' ? (
-                            <CheckIcon className="size-4" />
-                          ) : state === 'running' ? (
-                            <LoaderCircleIcon className="size-4 animate-spin" />
-                          ) : (
-                            <span>·</span>
-                          )}
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-sm font-medium text-[#111111]">
-                            {label}
-                          </div>
-                        </div>
-                        <div className="text-xs text-[#6b7280]">
-                          {state === 'done'
-                            ? copy.stageDone
-                            : state === 'running'
-                              ? copy.stageRunning
-                              : copy.stagePending}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div className="mt-5 rounded-[14px] border border-[#e9e9e9] bg-white p-4">
-                  <div className="text-xs text-[#6b7280]">{copy.canonicalLabel}</div>
-                  <div className="mt-2 break-all text-sm leading-6 text-[#111111]">
-                    {preview.canonicalUrl || copy.resultEmpty}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="features" className="border-b border-[#efefef] bg-[#fcfcfc]">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold tracking-tight text-[#111111]">
-                {copy.workbenchTitle}
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-[#6b7280]">
-                {result ? copy.resultHint : copy.resultEmpty}
-              </p>
-            </div>
-            <div className="inline-flex w-fit rounded-full border border-[#e5e7eb] bg-white px-3 py-1.5 text-xs text-[#4b5563]">
-              {result ? copy.resultLive : copy.resultSample}
-            </div>
-          </div>
-
-          <div className="mt-7 grid gap-5 lg:grid-cols-[0.86fr_1.14fr]">
-            <div className="overflow-hidden rounded-[18px] border border-[#e9e9e9] bg-white">
-              {preview.coverUrl ? (
-                <img
-                  src={preview.coverUrl}
-                  alt={preview.description}
-                  className="h-full min-h-[340px] w-full object-cover"
-                />
-              ) : (
-                <div className="flex min-h-[340px] flex-col justify-between bg-[linear-gradient(180deg,#f5f7ff_0%,#fbfbfb_100%)] p-6">
-                  <div className="inline-flex w-fit items-center rounded-full border border-[#e5e7eb] bg-white px-3 py-1.5 text-xs text-[#4b5563]">
-                    {result ? copy.resultLive : copy.resultSample}
-                  </div>
-                  <div>
-                    <div className="text-sm text-[#6b7280]">{copy.labels.author}</div>
-                    <div className="mt-2 text-2xl font-medium text-[#111111]">
-                      {preview.authorNickname}
-                    </div>
-                    <p className="mt-4 max-w-sm text-sm leading-6 text-[#6b7280]">
-                      {preview.description}
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-5">
-              <div className="rounded-[18px] border border-[#e9e9e9] bg-white p-6">
-                <div className="text-lg font-medium leading-7 text-[#111111]">
-                  {preview.description}
-                </div>
-
-                <div className="mt-6 space-y-4">
-                  <WorkbenchField
-                    label={copy.canonicalLabel}
-                    value={preview.canonicalUrl}
-                    actionLabel={
-                      copiedField === 'canonical' ? copy.copied : copy.copyCanonical
-                    }
-                    onAction={() =>
-                      handleCopy('canonical', preview.canonicalUrl)
-                    }
-                    disabled={!result}
-                  />
-                  <WorkbenchField
-                    label={copy.resolvedLabel}
-                    value={preview.resolvedUrl}
-                    muted
-                  />
-                </div>
-
-                <div className="mt-6 grid gap-5 sm:grid-cols-2">
-                  <InfoCell label={copy.labels.inputType} value={getInputTypeLabel(preview.inputType, pageLocale)} />
-                  <InfoCell label={copy.labels.author} value={preview.authorNickname} />
-                  <InfoCell
-                    label={copy.labels.resolution}
-                    value={`${preview.width} x ${preview.height}`}
-                  />
-                  <InfoCell label={copy.labels.format} value={preview.format} />
-                  <InfoCell
-                    label={copy.labels.bitrate}
-                    value={formatBitrate(preview.bitRate)}
-                  />
-                  <InfoCell
-                    label={copy.labels.published}
-                    value={preview.createTimeText}
-                  />
-                </div>
-              </div>
-
-              <div className="rounded-[18px] border border-[#e9e9e9] bg-white p-6">
-                <WorkbenchField
-                  label={copy.labels.payload}
-                  value={truncateUrl(preview.videoUrl)}
-                  actionLabel={copiedField === 'video' ? copy.copied : copy.copyVideo}
-                  onAction={() => handleCopy('video', preview.videoUrl)}
-                  disabled={!result}
-                />
-
-                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                  <a
-                    href={preview.videoUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-[12px] bg-[#111111] px-4 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#222222]"
+              <div className="mt-4 flex justify-center gap-3">
+                {ratioOptions.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => setRatio(option)}
+                    className={cn(
+                      'rounded-full border px-4 py-2 text-sm transition-colors',
+                      ratio === option
+                        ? 'border-[#8b5cf6] bg-[#8b5cf6] text-white'
+                        : 'border-[#e5e7eb] bg-white text-[#6b7280]'
+                    )}
                   >
-                    <ExternalLinkIcon className="size-4" />
-                    {copy.openVideo}
-                  </a>
-                  <a
-                    href={preview.canonicalUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-[12px] border border-[#e5e7eb] bg-white px-4 text-sm font-medium text-[#111111] transition-colors duration-200 hover:border-[#d1d5db]"
-                  >
-                    <Link2Icon className="size-4" />
-                    {copy.openSource}
-                  </a>
-                </div>
+                    {option}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInput('');
+                    setResult(null);
+                    setError('');
+                  }}
+                  className="rounded-full border border-[#e5e7eb] bg-white px-4 py-2 text-sm text-[#6b7280]"
+                >
+                  {copy.clear}
+                </button>
               </div>
+
+              {error ? (
+                <div className="mt-4 rounded-2xl border border-[#fecaca] bg-[#fff1f2] px-4 py-3 text-left text-sm text-[#be123c]">
+                  {error}
+                </div>
+              ) : null}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="border-b border-[#efefef] bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-semibold tracking-tight text-[#111111]">
-            {copy.featureTitle}
-          </h2>
-
-          <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {copy.featureCards.map(([title, body], index) => (
-              <div
-                key={title}
-                className={cn(
-                  'rounded-[16px] border border-[#e9e9e9] p-5',
-                  featureToneClasses[index % featureToneClasses.length]
-                )}
-              >
+        <section className="border-b border-[#f4f4f5] bg-[#fcfcff]">
+          <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {copy.features.map(([title, body], index) => (
                 <div
+                  key={title}
                   className={cn(
-                    'flex size-10 items-center justify-center rounded-xl',
-                    iconToneClasses[index % iconToneClasses.length]
+                    'rounded-[24px] border border-[#f0e7ff] p-7 text-center shadow-sm',
+                    index % 2 === 0 ? 'bg-[#fff7fb]' : 'bg-[#faf5ff]'
                   )}
                 >
-                  <FeatureIcon index={index} />
+                  <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-white text-[#ff3b5c] shadow-sm">
+                    {index === 0 ? (
+                      <SparklesIcon className="size-6" />
+                    ) : index === 1 ? (
+                      <CheckIcon className="size-6" />
+                    ) : index === 2 ? (
+                      <VideoIcon className="size-6" />
+                    ) : (
+                      <GlobeIcon className="size-6" />
+                    )}
+                  </div>
+                  <div className="mt-5 text-[28px] font-semibold tracking-tight text-[#111827]">
+                    {title}
+                  </div>
+                  <p className="mt-3 text-sm leading-7 text-[#6b7280]">{body}</p>
                 </div>
-                <div className="mt-4 text-base font-medium text-[#111111]">
-                  {title}
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-[#f4f4f5] bg-white">
+          <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+            <div className="mb-8 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-[#111827]">
+                {copy.resultTitle}
+              </h2>
+            </div>
+
+            {result ? (
+              <div className="mx-auto max-w-4xl space-y-8">
+                <div className="rounded-[24px] border border-[#ececf3] bg-white p-6 shadow-[0_18px_40px_rgba(17,24,39,0.05)]">
+                  <div className="flex flex-col gap-6 lg:flex-row">
+                    <div className="w-full lg:w-[340px]">
+                      {result.coverUrl ? (
+                        <img
+                          src={result.coverUrl}
+                          alt={result.description}
+                          className="aspect-[3/4] w-full rounded-[20px] object-cover"
+                        />
+                      ) : (
+                        <div className="flex aspect-[3/4] w-full items-center justify-center rounded-[20px] bg-[#f6f5ff] text-[#8b5cf6]">
+                          <ImageIcon className="size-12" />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="text-2xl font-bold leading-10 text-[#111827]">
+                        {result.description || copy.emptyResult}
+                      </div>
+
+                      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                        <InfoBox
+                          label={copy.inputTypeLabel}
+                          value={
+                            activeType ? copy.typeLabels[activeType] : '-'
+                          }
+                        />
+                        <InfoBox
+                          label={copy.authorLabel}
+                          value={result.authorNickname || '-'}
+                        />
+                        <InfoBox
+                          label={copy.resolutionLabel}
+                          value={`${result.width} x ${result.height}`}
+                        />
+                        <InfoBox
+                          label={copy.publishedLabel}
+                          value={result.createTimeText || '-'}
+                        />
+                      </div>
+
+                      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                        <a
+                          href={result.videoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#8b5cf6] px-5 text-sm font-semibold text-white"
+                        >
+                          <DownloadIcon className="size-4" />
+                          {copy.downloadVideo}
+                        </a>
+                        <a
+                          href={result.coverUrl || result.canonicalUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#8b5cf6] px-5 text-sm font-semibold text-white"
+                        >
+                          <ImageIcon className="size-4" />
+                          {copy.downloadImage}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <p className="mt-2 text-sm leading-6 text-[#6b7280]">{body}</p>
+
+                <div className="rounded-[24px] border border-[#ececf3] bg-white p-6 shadow-[0_18px_40px_rgba(17,24,39,0.05)]">
+                  <div className="text-lg font-semibold text-[#111827]">
+                    {copy.detailTitle}
+                  </div>
+
+                  <div className="mt-5 space-y-4">
+                    <ResultRow
+                      label={copy.canonicalLabel}
+                      value={result.canonicalUrl}
+                      actionLabel={
+                        copiedField === 'canonical' ? copy.copied : copy.copyLink
+                      }
+                      onAction={() =>
+                        handleCopy('canonical', result.canonicalUrl)
+                      }
+                    />
+                    <ResultRow
+                      label={copy.sourceLabel}
+                      value={result.resolvedUrl}
+                      actionLabel={
+                        copiedField === 'resolved' ? copy.copied : copy.copyLink
+                      }
+                      onAction={() =>
+                        handleCopy('resolved', result.resolvedUrl)
+                      }
+                    />
+                    <ResultRow
+                      label={copy.videoLabel}
+                      value={result.videoUrl}
+                      actionLabel={
+                        copiedField === 'video' ? copy.copied : copy.copyVideo
+                      }
+                      onAction={() => handleCopy('video', result.videoUrl)}
+                    />
+                  </div>
+                </div>
+
+                <div className="rounded-[24px] border border-[#ececf3] bg-white p-6 shadow-[0_18px_40px_rgba(17,24,39,0.05)]">
+                  <div className="text-lg font-semibold text-[#111827]">
+                    {copy.qualityTitle}
+                  </div>
+
+                  <div className="mt-5 grid gap-4 sm:grid-cols-[1fr_auto]">
+                    <div className="space-y-3">
+                      {qualityRows.map((row) => (
+                        <a
+                          key={row.ratio}
+                          href={row.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex w-full items-center justify-between rounded-2xl bg-[#3b82f6] px-5 py-4 text-left text-white"
+                        >
+                          <span className="text-sm font-semibold">
+                            {row.label}
+                            {row.sizeLabel ? ` ${row.sizeLabel}` : ''}
+                          </span>
+                          <DownloadIcon className="size-4" />
+                        </a>
+                      ))}
+                    </div>
+
+                    <div className="space-y-3">
+                      {qualityRows.map((row) => (
+                        <button
+                          key={`${row.ratio}-copy`}
+                          type="button"
+                          onClick={() => handleCopy(`quality-${row.ratio}`, row.url)}
+                          className="inline-flex w-full min-w-[84px] items-center justify-center rounded-2xl bg-[#22c55e] px-5 py-4 text-sm font-semibold text-white"
+                        >
+                          {copiedField === `quality-${row.ratio}`
+                            ? copy.copied
+                            : copy.qualityCopy}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="steps" className="border-b border-[#efefef] bg-[#fcfcfc]">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-semibold tracking-tight text-[#111111]">
-            {copy.stepsTitle}
-          </h2>
-
-          <div className="mt-7 grid gap-4 lg:grid-cols-3">
-            {copy.steps.map(([title, body], index) => (
-              <div
-                key={title}
-                className="rounded-[16px] border border-[#e9e9e9] bg-white p-6"
-              >
-                <div className="flex size-10 items-center justify-center rounded-full bg-[#111111] text-sm font-medium text-white">
-                  {index + 1}
+            ) : (
+              <div className="mx-auto max-w-4xl rounded-[24px] border border-dashed border-[#ddd6fe] bg-[#faf7ff] px-6 py-14 text-center">
+                <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-white text-[#8b5cf6] shadow-sm">
+                  {isPending ? (
+                    <LoaderCircleIcon className="size-7 animate-spin" />
+                  ) : (
+                    <SearchIcon className="size-7" />
+                  )}
                 </div>
-                <div className="mt-5 text-lg font-medium text-[#111111]">
-                  {title}
-                </div>
-                <p className="mt-2 text-sm leading-6 text-[#6b7280]">{body}</p>
+                <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-[#6b7280]">
+                  {isPending ? copy.parsing : copy.emptyResult}
+                </p>
               </div>
-            ))}
+            )}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="faqs" className="py-14">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <h2 className="text-2xl font-semibold tracking-tight text-[#111111]">
-              {copy.faqTitle}
-            </h2>
-            <LocaleLink
-              href="/contact"
-              className="text-sm text-[#4b5563] transition-colors duration-200 hover:text-[#111111]"
-            >
-              {copy.contactLabel}
-            </LocaleLink>
-          </div>
+        <section className="bg-[#fcfcff]">
+          <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+            <div className="mb-8 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-[#111827]">
+                {copy.howToTitle}
+              </h2>
+            </div>
 
-          <div className="mt-7 grid gap-4 lg:grid-cols-3">
-            {copy.faqs.map(([question, answer]) => (
-              <div
-                key={question}
-                className="rounded-[16px] border border-[#e9e9e9] bg-white p-5"
-              >
-                <div className="text-base font-medium leading-7 text-[#111111]">
-                  {question}
+            <div className="grid gap-5 md:grid-cols-2">
+              {copy.steps.map(([title, body], index) => (
+                <div
+                  key={title}
+                  className="rounded-[24px] border border-[#f0eefb] bg-white p-6 shadow-sm"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#fff1f2] text-[#ff3b5c]">
+                      {index === 0 ? (
+                        <ClipboardIcon className="size-5" />
+                      ) : index === 1 ? (
+                        <CopyIcon className="size-5" />
+                      ) : index === 2 ? (
+                        <CheckIcon className="size-5" />
+                      ) : (
+                        <DownloadIcon className="size-5" />
+                      )}
+                    </div>
+                    <div>
+                      <div className="text-xl font-semibold text-[#111827]">
+                        {title}
+                      </div>
+                      <p className="mt-2 text-sm leading-7 text-[#6b7280]">
+                        {body}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <p className="mt-3 text-sm leading-6 text-[#6b7280]">{answer}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </div>
   );
 }
 
-function FeatureIcon({ index }: { index: number }) {
-  const className = 'size-[18px]';
-
-  switch (index) {
-    case 0:
-      return <Link2Icon className={className} />;
-    case 1:
-      return <FilmIcon className={className} />;
-    case 2:
-      return <FileTextIcon className={className} />;
-    default:
-      return <ShieldCheckIcon className={className} />;
-  }
-}
-
-function InfoCell({ label, value }: { label: string; value: string }) {
+function InfoBox({ label, value }: { label: string; value: string }) {
   return (
-    <div>
+    <div className="rounded-2xl bg-[#fafafa] px-4 py-3">
       <div className="text-xs text-[#6b7280]">{label}</div>
-      <div className="mt-2 text-sm text-[#111111]">{value}</div>
+      <div className="mt-2 text-sm font-medium text-[#111827]">{value}</div>
     </div>
   );
 }
 
-function WorkbenchField({
+function ResultRow({
   label,
   value,
   actionLabel,
   onAction,
-  disabled,
-  muted = false,
 }: {
   label: string;
   value: string;
-  actionLabel?: string;
-  onAction?: () => void;
-  disabled?: boolean;
-  muted?: boolean;
+  actionLabel: string;
+  onAction: () => void;
 }) {
   return (
-    <div>
-      <div className="text-xs text-[#6b7280]">{label}</div>
-      <div className="mt-2 rounded-[14px] border border-[#ececec] bg-[#fafafa] px-4 py-4 text-sm leading-6 text-[#111111]">
-        <div className={cn('break-all', muted && 'text-[#6b7280]')}>{value}</div>
+    <div className="grid gap-3 rounded-2xl border border-[#f0f0f0] bg-[#fafafa] p-4 sm:grid-cols-[1fr_auto] sm:items-center">
+      <div className="min-w-0">
+        <div className="text-xs text-[#6b7280]">{label}</div>
+        <div className="mt-2 break-all text-sm leading-7 text-[#111827]">
+          {value}
+        </div>
       </div>
-      {actionLabel && onAction ? (
-        <button
-          type="button"
-          onClick={onAction}
-          disabled={disabled}
-          className="mt-3 inline-flex h-10 items-center justify-center gap-2 rounded-[12px] border border-[#e5e7eb] bg-white px-4 text-sm font-medium text-[#111111] transition-colors duration-200 hover:border-[#d1d5db] disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <CopyIcon className="size-4" />
-          {actionLabel}
-        </button>
-      ) : null}
+      <button
+        type="button"
+        onClick={onAction}
+        className="inline-flex h-11 items-center justify-center rounded-2xl bg-[#22c55e] px-5 text-sm font-semibold text-white"
+      >
+        {actionLabel}
+      </button>
     </div>
   );
 }
