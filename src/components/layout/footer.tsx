@@ -17,25 +17,22 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
   const localePathname = useLocalePathname();
 
   return (
-    <footer className={cn('border-t', className)}>
+    <footer className={cn('border-t border-white/8 bg-[#050b14]', className)}>
       <Container className="px-4">
         <div className="grid grid-cols-2 gap-8 py-16 md:grid-cols-6">
           <div className="flex flex-col items-start col-span-full md:col-span-2">
             <div className="space-y-4">
-              {/* logo and name */}
               <div className="items-center space-x-2 flex">
                 <Logo />
-                <span className="text-xl font-semibold">
+                <span className="text-xl font-semibold text-white">
                   {t('Metadata.name')}
                 </span>
               </div>
 
-              {/* tagline */}
-              <p className="text-muted-foreground text-base py-2 md:pr-12">
+              <p className="py-2 text-base text-slate-400 md:pr-12">
                 {t('Marketing.footer.tagline')}
               </p>
 
-              {/* social links */}
               {socialLinks.length > 0 ? (
                 <nav
                   aria-label="Social links"
@@ -49,8 +46,7 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
                         target="_blank"
                         rel="noreferrer"
                         aria-label={link.title}
-                        className="border border-border inline-flex size-8 items-center
-                            justify-center rounded-full hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all duration-200"
+                        className="inline-flex size-8 items-center justify-center rounded-full border border-white/10 text-slate-300 transition-all duration-200 hover:border-sky-300/30 hover:bg-sky-300/10 hover:text-sky-100"
                       >
                         {link.icon ? link.icon : null}
                       </a>
@@ -61,13 +57,12 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
             </div>
           </div>
 
-          {/* footer links */}
           {footerLinks?.map((section) => (
             <div
               key={section.title}
               className="col-span-1 md:col-span-1 items-start"
             >
-              <span className="text-sm font-semibold uppercase">
+              <span className="text-sm font-semibold uppercase text-white">
                 {section.title}
               </span>
               <ul className="mt-4 list-inside space-y-3">
@@ -79,13 +74,13 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
                           href={item.href || '#'}
                           target={item.external ? '_blank' : undefined}
                           className={cn(
-                            'text-sm text-muted-foreground transition-colors duration-150 hover:text-primary',
+                            'text-sm text-slate-400 transition-colors duration-150 hover:text-white',
                             !item.external &&
                               !item.href.includes('#') &&
                               (item.href === '/'
                                 ? localePathname === '/'
                                 : localePathname.startsWith(item.href)) &&
-                              'font-semibold text-primary'
+                              'font-semibold text-white'
                           )}
                         >
                           {item.title}
@@ -99,9 +94,9 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
         </div>
       </Container>
 
-      <div className="border-t py-8">
+      <div className="border-t border-white/8 py-8">
         <Container className="px-4 flex items-center justify-between gap-x-4">
-          <span className="text-muted-foreground text-sm">
+          <span className="text-sm text-slate-500">
             &copy; {new Date().getFullYear()} {t('Metadata.name')}. All Rights
             Reserved.
           </span>

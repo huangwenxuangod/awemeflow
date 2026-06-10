@@ -28,6 +28,7 @@ export function Navbar({ scroll = true }: NavBarProps) {
   const menuLinks = useNavbarLinks();
   const localePathname = useLocalePathname();
   const showBarBg = scroll && scrolled;
+  const isHome = localePathname === '/';
 
   return (
     <header
@@ -51,10 +52,10 @@ export function Navbar({ scroll = true }: NavBarProps) {
             <LocaleLink
               href="/"
               aria-label="Home"
-              className="flex items-center gap-2 shrink-0"
+              className="flex shrink-0 items-center gap-2"
             >
               <Logo />
-              <span className="text-xl font-semibold">
+              <span className="text-xl font-semibold tracking-tight">
                 {t('Metadata.name')}
               </span>
             </LocaleLink>
@@ -67,12 +68,12 @@ export function Navbar({ scroll = true }: NavBarProps) {
                       asChild
                       className={cn(
                         navigationMenuTriggerStyle(),
-                        'bg-transparent',
+                        'rounded-full bg-transparent px-4 text-sm text-slate-300 hover:bg-white/5 hover:text-white',
                         item.href &&
                           (item.href === '/'
-                            ? localePathname === '/'
+                            ? isHome
                             : localePathname.startsWith(item.href)) &&
-                          'font-semibold text-primary'
+                          'font-semibold text-white'
                       )}
                     >
                       <LocaleLink
@@ -88,7 +89,7 @@ export function Navbar({ scroll = true }: NavBarProps) {
               </NavigationMenuList>
             </NavigationMenu>
 
-            <div className="flex items-center gap-4 shrink-0">
+            <div className="flex shrink-0 items-center gap-3">
               <ModeSwitcher />
               <LocaleSwitcher />
             </div>

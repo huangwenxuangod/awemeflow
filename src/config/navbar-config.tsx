@@ -27,6 +27,11 @@ export function useNavbarLinks(): NestedMenuItem[] {
       title: t('pricing.title'),
       href: Routes.Pricing,
       external: false,
+    },
+    {
+      title: t('pages.items.contact.title'),
+      href: Routes.Contact,
+      external: false,
     }
   ];
 }
