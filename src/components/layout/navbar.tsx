@@ -33,8 +33,8 @@ export function Navbar({ scroll = true }: NavBarProps) {
   return (
     <header
       className={cn(
-        'sticky inset-x-0 top-0 z-40 border-b border-slate-900 bg-[#111111] py-4 transition-all duration-300',
-        showBarBg && 'shadow-[0_8px_30px_rgba(0,0,0,0.18)]'
+        'sticky inset-x-0 top-0 z-40 border-b border-[#ececec] bg-white py-4 transition-all duration-300',
+        showBarBg && 'shadow-[0_8px_24px_rgba(17,17,17,0.04)]'
       )}
     >
       <div className="relative z-10">
@@ -49,7 +49,7 @@ export function Navbar({ scroll = true }: NavBarProps) {
               className="flex shrink-0 items-center gap-2"
             >
               <Logo />
-              <span className="text-xl font-semibold tracking-tight text-white">
+              <span className="text-xl font-semibold tracking-tight text-[#111111]">
                 {t('Metadata.name')}
               </span>
             </LocaleLink>
@@ -62,12 +62,12 @@ export function Navbar({ scroll = true }: NavBarProps) {
                       asChild
                       className={cn(
                         navigationMenuTriggerStyle(),
-                        'rounded-full bg-transparent px-4 text-sm text-slate-300 hover:bg-white/5 hover:text-white',
+                        'rounded-full bg-transparent px-4 text-sm text-[#6b7280] hover:bg-[#f5f5f5] hover:text-[#111111]',
                         item.href &&
                           (item.href === '/'
                             ? isHome
                             : localePathname.startsWith(item.href)) &&
-                          'font-semibold text-white'
+                          'font-medium text-[#111111]'
                       )}
                     >
                       <LocaleLink

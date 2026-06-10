@@ -12,8 +12,8 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 const mobileLinkClass =
-  'flex w-full items-center rounded-xl px-3 py-3 text-base text-slate-300 transition-colors duration-150 hover:bg-white/5 hover:text-white';
-const mobileLinkActiveClass = 'font-semibold text-white';
+  'flex w-full items-center rounded-xl px-3 py-3 text-base text-[#4b5563] transition-colors duration-150 hover:bg-[#f5f5f5] hover:text-[#111111]';
+const mobileLinkActiveClass = 'font-medium text-[#111111]';
 
 interface NavbarMobileProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -39,7 +39,7 @@ export function NavbarMobile({ className, ...props }: NavbarMobileProps) {
       >
         <LocaleLink href="/" className="flex items-center gap-2">
           <Logo />
-          <span className="text-xl font-semibold text-white">
+          <span className="text-xl font-semibold text-[#111111]">
             {t('Metadata.name')}
           </span>
         </LocaleLink>
@@ -51,7 +51,7 @@ export function NavbarMobile({ className, ...props }: NavbarMobileProps) {
           aria-expanded={open}
           aria-label="Toggle menu"
           onClick={() => setOpen((o) => !o)}
-          className="size-10 rounded-full border border-white/10 bg-white/5 text-white hover:bg-white/10"
+          className="size-10 rounded-full border border-[#e5e7eb] bg-white text-[#111111] hover:bg-[#f8f8f8]"
         >
           {open ? <XIcon className="size-4" /> : <MenuIcon className="size-4" />}
         </Button>
@@ -62,7 +62,7 @@ export function NavbarMobile({ className, ...props }: NavbarMobileProps) {
           role="dialog"
           aria-modal="true"
           aria-label="Mobile navigation"
-          className="fixed inset-0 top-[73px] z-50 flex flex-col overflow-y-auto bg-[#111111] animate-in fade-in-0 duration-200"
+          className="fixed inset-0 top-[73px] z-50 flex flex-col overflow-y-auto bg-white animate-in fade-in-0 duration-200"
         >
           <div className="flex flex-1 flex-col items-start gap-4 p-4">
             <ul className="w-full space-y-1">
@@ -91,7 +91,7 @@ export function NavbarMobile({ className, ...props }: NavbarMobileProps) {
               })}
             </ul>
 
-            <div className="mt-auto flex w-full items-center justify-between border-t border-white/10 p-4">
+            <div className="mt-auto flex w-full items-center justify-between border-t border-[#ececec] p-4">
               <LocaleSelector />
               <ModeSwitcherHorizontal />
             </div>

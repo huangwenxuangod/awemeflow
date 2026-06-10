@@ -15,23 +15,21 @@ import { useTranslations } from 'next-intl';
  * @returns The navbar config with translated titles and descriptions
  */
 export function useNavbarLinks(): NestedMenuItem[] {
-  const t = useTranslations('Marketing.navbar');
-
   return [
     {
-      title: t('features.title'),
+      title: '能力',
       href: Routes.Features,
       external: false,
     },
     {
-      title: t('pricing.title'),
-      href: Routes.Pricing,
+      title: '使用方法',
+      href: '/#steps',
       external: false,
     },
     {
-      title: t('pages.items.contact.title'),
-      href: Routes.Contact,
+      title: '常见问题',
+      href: Routes.FAQ,
       external: false,
-    }
+    },
   ];
 }
