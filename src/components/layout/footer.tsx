@@ -17,19 +17,19 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
   const localePathname = useLocalePathname();
 
   return (
-    <footer className={cn('border-t border-white/8 bg-[#050b14]', className)}>
+    <footer className={cn('border-t border-slate-200 bg-white', className)}>
       <Container className="px-4">
-        <div className="grid grid-cols-2 gap-8 py-16 md:grid-cols-6">
-          <div className="flex flex-col items-start col-span-full md:col-span-2">
+        <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-6">
+          <div className="col-span-full flex flex-col items-start md:col-span-2">
             <div className="space-y-4">
-              <div className="items-center space-x-2 flex">
+              <div className="flex items-center space-x-2">
                 <Logo />
-                <span className="text-xl font-semibold text-white">
+                <span className="text-xl font-semibold text-slate-950">
                   {t('Metadata.name')}
                 </span>
               </div>
 
-              <p className="py-2 text-base text-slate-400 md:pr-12">
+              <p className="py-1 text-sm leading-7 text-slate-600 md:pr-12">
                 {t('Marketing.footer.tagline')}
               </p>
 
@@ -46,7 +46,7 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
                         target="_blank"
                         rel="noreferrer"
                         aria-label={link.title}
-                        className="inline-flex size-8 items-center justify-center rounded-full border border-white/10 text-slate-300 transition-all duration-200 hover:border-sky-300/30 hover:bg-sky-300/10 hover:text-sky-100"
+                        className="inline-flex size-8 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-200 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-600"
                       >
                         {link.icon ? link.icon : null}
                       </a>
@@ -62,7 +62,7 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
               key={section.title}
               className="col-span-1 md:col-span-1 items-start"
             >
-              <span className="text-sm font-semibold uppercase text-white">
+              <span className="text-sm font-semibold uppercase text-slate-950">
                 {section.title}
               </span>
               <ul className="mt-4 list-inside space-y-3">
@@ -74,13 +74,13 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
                           href={item.href || '#'}
                           target={item.external ? '_blank' : undefined}
                           className={cn(
-                            'text-sm text-slate-400 transition-colors duration-150 hover:text-white',
+                            'text-sm text-slate-600 transition-colors duration-150 hover:text-slate-950',
                             !item.external &&
                               !item.href.includes('#') &&
                               (item.href === '/'
                                 ? localePathname === '/'
                                 : localePathname.startsWith(item.href)) &&
-                              'font-semibold text-white'
+                              'font-semibold text-slate-950'
                           )}
                         >
                           {item.title}
@@ -94,7 +94,7 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
         </div>
       </Container>
 
-      <div className="border-t border-white/8 py-8">
+      <div className="border-t border-slate-200 py-6">
         <Container className="px-4 flex items-center justify-between gap-x-4">
           <span className="text-sm text-slate-500">
             &copy; {new Date().getFullYear()} {t('Metadata.name')}. All Rights

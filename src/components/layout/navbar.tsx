@@ -33,16 +33,10 @@ export function Navbar({ scroll = true }: NavBarProps) {
   return (
     <header
       className={cn(
-        'sticky inset-x-0 top-0 z-40 py-4 transition-all duration-300',
-        showBarBg && 'border-b'
+        'sticky inset-x-0 top-0 z-40 border-b border-slate-900 bg-[#111111] py-4 transition-all duration-300',
+        showBarBg && 'shadow-[0_8px_30px_rgba(0,0,0,0.18)]'
       )}
     >
-      {showBarBg && (
-        <div
-          className="absolute inset-0 z-0 bg-muted/50 backdrop-blur-md"
-          aria-hidden="true"
-        />
-      )}
       <div className="relative z-10">
         <Container className="px-4">
           <nav
@@ -55,7 +49,7 @@ export function Navbar({ scroll = true }: NavBarProps) {
               className="flex shrink-0 items-center gap-2"
             >
               <Logo />
-              <span className="text-xl font-semibold tracking-tight">
+              <span className="text-xl font-semibold tracking-tight text-white">
                 {t('Metadata.name')}
               </span>
             </LocaleLink>
