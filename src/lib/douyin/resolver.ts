@@ -39,6 +39,7 @@ export async function resolveDouyinVideo(
 
   let awemeId = input.explicitId || extractAwemeId(input.text);
   let sourceUrl = input.text;
+  let prefetchedResult: DouyinVideoResult | null = null;
 
   if (!awemeId && input.text) {
     const url = extractUrl(input.text);
@@ -51,6 +52,17 @@ export async function resolveDouyinVideo(
         host: resolved.hostname,
         foundAwemeId: Boolean(awemeId),
       });
+
+      if (!awemeId) {
+        assertResolvableShareUrl(sourceUrl);
+        prefetchedResult = await fetchShareVideoByUrl(
+          sourceUrl,
+          input.ratio,
+          cache,
+          trace
+        );
+        awemeId = prefetchedResult.awemeId;
+      }
     }
   }
 
@@ -71,13 +83,9 @@ export async function resolveDouyinVideo(
     return buildResult(cached, trace, payload.debug);
   }
 
-  const data = await fetchShareVideo(
-    awemeId,
-    input.ratio,
-    sourceUrl,
-    cache,
-    trace
-  );
+  const data =
+    prefetchedResult ??
+    (await fetchShareVideo(awemeId, input.ratio, sourceUrl, cache, trace));
   await cache?.put(resultCacheKey, data, RESULT_CACHE_TTL_SECONDS);
   trace.add('resolve_success', { awemeId });
   return buildResult(data, trace, payload.debug);
@@ -93,10 +101,25 @@ async function fetchShareVideo(
   const shareUrl = `${IES_DOUYIN_ORIGIN}/share/video/${encodeURIComponent(
     awemeId
   )}/`;
+  return fetchShareVideoByUrl(shareUrl, ratio, cache, trace, awemeId, sourceUrl);
+}
+
+async function fetchShareVideoByUrl(
+  shareUrl: string,
+  ratio: string,
+  cache: DouyinCache | undefined,
+  trace: DouyinTrace,
+  expectedAwemeId?: string,
+  sourceUrl?: string
+) {
   let ttwid = await getTtwid(cache);
 
   for (let attempt = 0; attempt < 2; attempt += 1) {
-    trace.add('share_fetch', { awemeId, attempt: attempt + 1 });
+    trace.add('share_fetch', {
+      awemeId: expectedAwemeId || 'pending',
+      attempt: attempt + 1,
+      shareUrl,
+    });
     const { response, text } = await fetchText(shareUrl, {
       method: 'GET',
       redirect: 'follow',
@@ -142,17 +165,26 @@ async function fetchShareVideo(
 
     const awemeList = extractAwemeList(routerData);
     const aweme =
-      awemeList.find(
-        (item) =>
-          stringValue(item.aweme_id) === awemeId ||
-          stringValue(item.id) === awemeId
-      ) ?? awemeList[0];
+      awemeList.find((item) => {
+        if (!expectedAwemeId) {
+          return false;
+        }
+
+        return (
+          stringValue(item.aweme_id) === expectedAwemeId ||
+          stringValue(item.id) === expectedAwemeId
+        );
+      }) ?? awemeList[0];
 
     if (!aweme) {
       throw new DouyinError(422, '分享页没有作品数据', 'AWEME_DATA_MISSING');
     }
 
-    const result = normalizeAweme(aweme, sourceUrl || shareUrl, ratio);
+    const result = normalizeAweme(
+      aweme,
+      sourceUrl || response.url || shareUrl,
+      ratio
+    );
 
     if (!result.videoUrl) {
       throw new DouyinError(422, '没有解析到视频地址', 'VIDEO_URL_MISSING');
@@ -174,4 +206,23 @@ function buildResult(
     traceId: trace.id,
     ...(includeDebug ? { debug: trace.events } : {}),
   };
+}
+
+function assertResolvableShareUrl(url: string) {
+  try {
+    const parsed = new URL(url);
+    const pathname = parsed.pathname.toLowerCase();
+
+    if (pathname.includes('/share/user/')) {
+      throw new DouyinError(
+        400,
+        '当前短链接跳转到的是用户主页，不是视频分享页。请改用视频详情页链接、分享文案或作品 ID。',
+        'SHORT_LINK_TO_USER_PAGE'
+      );
+    }
+  } catch (error) {
+    if (error instanceof DouyinError) {
+      throw error;
+    }
+  }
 }
