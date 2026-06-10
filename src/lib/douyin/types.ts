@@ -1,5 +1,15 @@
+export type DouyinInputType =
+  | 'aweme_id'
+  | 'video_url'
+  | 'share_video_url'
+  | 'short_link'
+  | 'share_text';
+
 export interface DouyinVideoResult {
   awemeId: string;
+  canonicalUrl: string;
+  resolvedUrl: string;
+  inputType: DouyinInputType;
   description: string;
   createTime: number | null;
   createTimeText: string;

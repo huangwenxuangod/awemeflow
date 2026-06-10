@@ -1,6 +1,6 @@
-import { DOUYIN_ORIGIN, PLAY_ORIGIN } from './constants';
+import { DOUYIN_ORIGIN, IES_DOUYIN_ORIGIN, PLAY_ORIGIN } from './constants';
 import { isRecord, stringValue } from './router-data';
-import type { DouyinVideoResult, UnknownRecord } from './types';
+import type { DouyinInputType, DouyinVideoResult, UnknownRecord } from './types';
 
 interface VideoCandidate {
   url: string;
@@ -17,19 +17,26 @@ interface VideoCandidate {
 export function normalizeAweme(
   aweme: UnknownRecord,
   sourceUrl: string,
-  ratio = '1080p'
+  ratio = '1080p',
+  inputType: DouyinInputType = 'video_url'
 ): DouyinVideoResult {
   const video = isRecord(aweme.video) ? aweme.video : {};
   const best = pickBestVideo(video);
   const token = extractPlayToken(video);
   const awemeId = stringValue(aweme.aweme_id) || stringValue(aweme.id);
-  const source =
-    sourceUrl || (awemeId ? `${DOUYIN_ORIGIN}/video/${awemeId}` : '');
+  const canonicalUrl = awemeId ? `${DOUYIN_ORIGIN}/video/${awemeId}` : '';
+  const resolvedUrl = awemeId
+    ? `${IES_DOUYIN_ORIGIN}/share/video/${awemeId}/`
+    : sourceUrl;
+  const source = sourceUrl || canonicalUrl;
   const author = isRecord(aweme.author) ? aweme.author : {};
   const createTime = toNumber(aweme.create_time) || null;
 
   return {
     awemeId,
+    canonicalUrl,
+    resolvedUrl,
+    inputType,
     description: stringValue(aweme.desc),
     createTime,
     createTimeText: formatTime(createTime),

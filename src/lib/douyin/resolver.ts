@@ -21,6 +21,7 @@ import { DouyinTrace } from './trace';
 import { getTtwid, invalidateTtwid } from './ttwid';
 import type {
   DouyinCache,
+  DouyinInputType,
   DouyinVideoResult,
   ResolveDouyinInput,
   ResolveDouyinResult,
@@ -39,12 +40,18 @@ export async function resolveDouyinVideo(
 
   let awemeId = input.explicitId || extractAwemeId(input.text);
   let sourceUrl = input.text;
+  let inputType: DouyinInputType = input.explicitId
+    ? 'aweme_id'
+    : input.text.includes(' ')
+      ? 'share_text'
+      : 'video_url';
   let prefetchedResult: DouyinVideoResult | null = null;
 
   if (!awemeId && input.text) {
     const url = extractUrl(input.text);
 
     if (url) {
+      inputType = classifyUrlInput(url);
       const resolved = await resolveShortLink(url);
       sourceUrl = resolved.toString();
       awemeId = extractAwemeId(sourceUrl);
@@ -52,6 +59,7 @@ export async function resolveDouyinVideo(
         host: resolved.hostname,
         foundAwemeId: Boolean(awemeId),
       });
+      inputType = 'short_link';
 
       if (!awemeId) {
         assertResolvableShareUrl(sourceUrl);
@@ -59,10 +67,15 @@ export async function resolveDouyinVideo(
           sourceUrl,
           input.ratio,
           cache,
-          trace
+          trace,
+          undefined,
+          sourceUrl,
+          'short_link'
         );
         awemeId = prefetchedResult.awemeId;
       }
+    } else if (input.text) {
+      inputType = 'share_text';
     }
   }
 
@@ -85,7 +98,14 @@ export async function resolveDouyinVideo(
 
   const data =
     prefetchedResult ??
-    (await fetchShareVideo(awemeId, input.ratio, sourceUrl, cache, trace));
+    (await fetchShareVideo(
+      awemeId,
+      input.ratio,
+      sourceUrl,
+      cache,
+      trace,
+      inputType
+    ));
   await cache?.put(resultCacheKey, data, RESULT_CACHE_TTL_SECONDS);
   trace.add('resolve_success', { awemeId });
   return buildResult(data, trace, payload.debug);
@@ -96,12 +116,21 @@ async function fetchShareVideo(
   ratio: string,
   sourceUrl: string,
   cache: DouyinCache | undefined,
-  trace: DouyinTrace
+  trace: DouyinTrace,
+  inputType: DouyinInputType
 ) {
   const shareUrl = `${IES_DOUYIN_ORIGIN}/share/video/${encodeURIComponent(
     awemeId
   )}/`;
-  return fetchShareVideoByUrl(shareUrl, ratio, cache, trace, awemeId, sourceUrl);
+  return fetchShareVideoByUrl(
+    shareUrl,
+    ratio,
+    cache,
+    trace,
+    awemeId,
+    sourceUrl,
+    inputType
+  );
 }
 
 async function fetchShareVideoByUrl(
@@ -110,7 +139,8 @@ async function fetchShareVideoByUrl(
   cache: DouyinCache | undefined,
   trace: DouyinTrace,
   expectedAwemeId?: string,
-  sourceUrl?: string
+  sourceUrl?: string,
+  inputType: DouyinInputType = 'video_url'
 ) {
   let ttwid = await getTtwid(cache);
 
@@ -183,7 +213,8 @@ async function fetchShareVideoByUrl(
     const result = normalizeAweme(
       aweme,
       sourceUrl || response.url || shareUrl,
-      ratio
+      ratio,
+      inputType
     );
 
     if (!result.videoUrl) {
@@ -225,4 +256,18 @@ function assertResolvableShareUrl(url: string) {
       throw error;
     }
   }
+}
+
+function classifyUrlInput(url: URL): DouyinInputType {
+  const pathname = url.pathname.toLowerCase();
+
+  if (url.hostname === 'v.douyin.com') {
+    return 'short_link';
+  }
+
+  if (pathname.includes('/share/video/')) {
+    return 'share_video_url';
+  }
+
+  return 'video_url';
 }
